@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Imparfait Quiz - TCF Preparation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            min-height: auto;
+            box-sizing: border-box;
+        }
+        #question {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #2c3e50;
+        }
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .option {
+            position: relative;
+            display: block;
+        }
+        .option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .option label {
+            display: block;
+            padding: 0.75rem 1rem;
+            background-color: #e7eff6;
+            border: 2px solid #ccdbe8;
+            border-radius: 8px;
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+        }
+        .option input:checked + label {
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+        .option input:checked + label.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .option input:checked + label.wrong {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .option label:hover {
+            background-color: #d4e4f1;
+            border-color: #b3c9e0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 1.5rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #feedback {
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+            font-weight: bold;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            #question {
+                font-size: clamp(0.9rem, 4vw, 1.2rem);
+            }
+            .option label {
+                padding: 0.75rem;
+                font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+            }
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: clamp(0.75rem, 3.5vw, 0.85rem);
+            }
+            #feedback {
+                font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+            }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .container {
+                padding: 1.75rem;
+                max-width: 700px;
+            }
+            #question {
+                font-size: clamp(1rem, 2.5vw, 1.3rem);
+            }
+            .option label {
+                padding: 0.75rem 1rem;
+                font-size: clamp(0.8rem, 2vw, 0.95rem);
+            }
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: clamp(0.8rem, 2vw, 0.9rem);
+            }
+            #feedback {
+                font-size: clamp(0.8rem, 2vw, 0.95rem);
+            }
+        }
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            .container {
+                padding: 2rem;
+                max-width: 750px;
+            }
+            #question {
+                font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+            }
+            .option label {
+                padding: 0.8rem 1.2rem;
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+            button {
+                padding: 0.8rem 1.6rem;
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+            #feedback {
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+        }
+        @media (min-width: 1441px) {
+            .container {
+                padding: 2.5rem;
+                max-width: 800px;
+            }
+            #question {
+                font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+            }
+            .option label {
+                padding: 1rem 1.5rem;
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
+            }
+            button {
+                padding: 1rem 2rem;
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
+            }
+            #feedback {
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const subjects = [
+            {fr: "je", en: "I"},
+            {fr: "tu", en: "you (informal)"},
+            {fr: "il", en: "he"},
+            {fr: "elle", en: "she"},
+            {fr: "nous", en: "we"},
+            {fr: "vous", en: "you (formal/plural)"},
+            {fr: "ils", en: "they (masc)"},
+            {fr: "elles", en: "they (fem)"}
+        ];
+
+        const endings = ["ais", "ais", "ait", "ions", "iez", "aient"];
+
+        const verbs = [
+            {inf: "manger", stem: "mang", type: "regular", en: "eating", complements: [
+                {fr: "une pomme tous les jours.", en: "an apple every day."},
+                {fr: "un sandwich le midi.", en: "a sandwich at noon."},
+                {fr: "de la pizza avec des amis.", en: "pizza with friends."}
+            ]},
+            {inf: "regarder", stem: "regard", type: "regular", en: "watching", complements: [
+                {fr: "la télévision chaque soir.", en: "television every evening."},
+                {fr: "un film au cinéma.", en: "a movie at the cinema."}
+            ]},
+            {inf: "acheter", stem: "achet", type: "regular", en: "buying", complements: [
+                {fr: "une voiture neuve.", en: "a new car."},
+                {fr: "des livres à la librairie.", en: "books at the bookstore."}
+            ]},
+            {inf: "donner", stem: "donn", type: "regular", en: "giving", complements: [
+                {fr: "un cadeau à son ami.", en: "a gift to his friend."},
+                {fr: "de l'argent à une œuvre de charité.", en: "money to a charity."}
+            ]},
+            {inf: "faire", stem: "fais", type: "regular", en: "doing/making", complements: [
+                {fr: "les devoirs tous les soirs.", en: "homework every evening."},
+                {fr: "une promenade dans le parc.", en: "a walk in the park."}
+            ]},
+            {inf: "voir", stem: "voy", type: "regular", en: "seeing", complements: [
+                {fr: "un ami au café.", en: "a friend at the cafe."},
+                {fr: "un film au cinéma.", en: "a movie at the cinema."}
+            ]},
+            {inf: "choisir", stem: "choisiss", type: "regular", en: "choosing", complements: [
+                {fr: "un cadeau pour Noël.", en: "a gift for Christmas."},
+                {fr: "une robe pour la fête.", en: "a dress for the party."}
+            ]},
+            {inf: "vendre", stem: "vend", type: "regular", en: "selling", complements: [
+                {fr: "sa voiture ancienne.", en: "his old car."},
+                {fr: "une maison familiale.", en: "a family house."}
+            ]},
+            {inf: "inviter", stem: "invit", type: "regular", en: "inviting", complements: [
+                {fr: "des amis à dîner.", en: "friends to dinner."},
+                {fr: "sa famille pour les vacances.", en: "his family for the holidays."}
+            ]},
+            {inf: "finir", stem: "finiss", type: "regular", en: "finishing", complements: [
+                {fr: "ses devoirs tard le soir.", en: "his homework late at night."},
+                {fr: "un projet à temps.", en: "a project on time."}
+            ]},
+            {inf: "oublier", stem: "oubli", type: "regular", en: "forgetting", complements: [
+                {fr: "son parapluie souvent.", en: "his umbrella often."},
+                {fr: "l'anniversaire de son ami.", en: "his friend's birthday."}
+            ]},
+            {inf: "gagner", stem: "gagn", type: "regular", en: "winning", complements: [
+                {fr: "le match chaque semaine.", en: "the match every week."},
+                {fr: "un prix à un concours.", en: "a prize in a competition."}
+            ]},
+            {inf: "ranger", stem: "rang", type: "regular", en: "tidying", complements: [
+                {fr: "sa chambre tous les week-ends.", en: "his room every weekend."},
+                {fr: "les livres sur l'étagère.", en: "the books on the shelf."}
+            ]},
+            {inf: "décider", stem: "décid", type: "regular", en: "deciding", complements: [
+                {fr: "de partir en vacances.", en: "to go on vacation."},
+                {fr: "d'étudier le français.", en: "to study French."}
+            ]},
+            {inf: "écouter", stem: "écout", type: "regular", en: "listening to", complements: [
+                {fr: "de la musique en travaillant.", en: "music while working."},
+                {fr: "un podcast le matin.", en: "a podcast in the morning."}
+            ]},
+            {inf: "parler", stem: "parl", type: "regular", en: "speaking", complements: [
+                {fr: "au professeur après la classe.", en: "to the teacher after class."},
+                {fr: "avec ses amis au téléphone.", en: "with his friends on the phone."}
+            ]},
+            {inf: "attendre", stem: "attend", type: "regular", en: "waiting for", complements: [
+                {fr: "le bus sous la pluie.", en: "the bus in the rain."},
+                {fr: "ses amis au restaurant.", en: "his friends at the restaurant."},
+                {fr: "souvent à la bibliothèque.", en: "often at the library."}  // From TV5Monde
+            ]},
+            {inf: "travailler", stem: "travaill", type: "regular", en: "working", complements: [
+                {fr: "au bureau toute la journée.", en: "at the office all day."},
+                {fr: "sur un projet important.", en: "on an important project."}
+            ]},
+            {inf: "lire", stem: "lis", type: "regular", en: "reading", complements: [
+                {fr: "un livre passionnant.", en: "an exciting book."},
+                {fr: "le journal le matin.", en: "the newspaper in the morning."}
+            ]},
+            {inf: "écrire", stem: "écriv", type: "regular", en: "writing", complements: [
+                {fr: "une lettre à sa famille.", en: "a letter to his family."},
+                {fr: "un courriel à son patron.", en: "an email to his boss."}
+            ]},
+            {inf: "être", stem: "ét", type: "etre", en: "", complements: [
+                {fr: "heureux dans son enfance.", en: "happy during his childhood."},
+                {fr: "fatigué après le travail.", en: "tired after work."},
+                {fr: "jeune.", en: "young."}  // From TV5Monde: J'étais jeune.
+            ]},
+            {inf: "avoir", stem: "av", type: "avoir", en: "had", complements: [
+                {fr: "faim tous les matins.", en: "hunger every morning."},
+                {fr: "un chien quand il était petit.", en: "a dog when he was young."}
+            ]},
+            {inf: "aller", stem: "all", type: "regular", en: "going", complements: [
+                {fr: "au parc tous les dimanches.", en: "to the park every Sunday."},
+                {fr: "en vacances chaque été.", en: "on vacation every summer."},
+                {fr: "tous les week-ends chez ma grand-mère.", en: "every weekend to my grandmother's house."}  // From Alpine French School example
+            ]},
+            {inf: "venir", stem: "ven", type: "regular", en: "coming", complements: [
+                {fr: "de Paris en train.", en: "from Paris by train."},
+                {fr: "chez moi après l'école.", en: "to my house after school."},
+                {fr: "souvent ici.", en: "often here."}  // From TV5Monde: Je venais souvent ici.
+            ]},
+            {inf: "arriver", stem: "arriv", type: "regular", en: "arriving", complements: [
+                {fr: "à l'heure à l'école.", en: "on time at school."},
+                {fr: "en avance aux réunions.", en: "early to meetings."}
+            ]},
+            {inf: "partir", stem: "part", type: "regular", en: "leaving", complements: [
+                {fr: "en voyage souvent.", en: "on trips often."},
+                {fr: "tôt le matin.", en: "early in the morning."}
+            ]},
+            {inf: "sortir", stem: "sort", type: "regular", en: "going out", complements: [
+                {fr: "avec des amis le soir.", en: "with friends in the evening."},
+                {fr: "du bâtiment après le travail.", en: "from the building after work."}
+            ]},
+            {inf: "monter", stem: "mont", type: "regular", en: "going up", complements: [
+                {fr: "les escaliers rapidement.", en: "the stairs quickly."},
+                {fr: "à l'étage pour dormir.", en: "upstairs to sleep."}
+            ]},
+            {inf: "descendre", stem: "descend", type: "regular", en: "going down", complements: [
+                {fr: "les escaliers le matin.", en: "the stairs in the morning."},
+                {fr: "de la montagne à ski.", en: "the mountain by skiing."}
+            ]},
+            {inf: "entrer", stem: "entr", type: "regular", en: "entering", complements: [
+                {fr: "dans la maison doucement.", en: "the house quietly."},
+                {fr: "dans la salle de classe.", en: "the classroom."}
+            ]},
+            {inf: "retourner", stem: "retourn", type: "regular", en: "returning", complements: [
+                {fr: "à l'école après les vacances.", en: "to school after the holidays."},
+                {fr: "chez lui le soir.", en: "home in the evening."}
+            ]},
+            {inf: "tomber", stem: "tomb", type: "regular", en: "falling", complements: [
+                {fr: "par terre souvent.", en: "to the ground often."},
+                {fr: "dans l'eau en jouant.", en: "into the water while playing."}
+            ]},
+            {inf: "rester", stem: "rest", type: "regular", en: "staying", complements: [
+                {fr: "à la maison quand il pleuvait.", en: "at home when it was raining."},
+                {fr: "en ville pour travailler.", en: "in town to work."}
+            ]}
+        ];
+
+        let correctAnswer = '';
+        let correctEnglish = '';
+        let answeredCorrectly = false;
+
+        // Function to validate translations for grammatical correctness and context
+        function validateTranslations() {
+            subjects.forEach((sub, index) => {
+                verbs.forEach(verb => {
+                    verb.complements.forEach(comp => {
+                        let auxiliary = [0,2,3].includes(index) ? 'was' : 'were';
+                        let enTranslation = '';
+                        if (verb.type === 'regular') {
+                            enTranslation = `${sub.en} ${auxiliary} ${verb.en} ${comp.en}`;
+                        } else if (verb.type === 'etre') {
+                            enTranslation = `${sub.en} ${auxiliary} ${comp.en}`;
+                        } else if (verb.type === 'avoir') {
+                            enTranslation = `${sub.en} ${verb.en} ${comp.en}`;
+                        }
+                        // Basic checks for grammatical correctness
+                        if (enTranslation.includes("was was") || enTranslation.includes("were was") || enTranslation.includes("you was") || enTranslation.includes("we was") || enTranslation.includes("they was")) {
+                            console.warn(`Invalid translation detected: "${enTranslation}" for subject "${sub.en}", verb "${verb.inf}", complement "${comp.fr}"`);
+                        }
+                        // Ensure complements make sense with the verb
+                        if (verb.type === 'regular' && !comp.en.match(/^(a |an |the |[a-zA-Z]* |every |on |to |in |at |from |by |into |with |during |after |often)/)) {
+                            console.warn(`Context mismatch for verb "${verb.inf}" with complement "${comp.en}"`);
+                        }
+                    });
+                });
+            });
+        }
+
+        // Run validation before starting the quiz
+        validateTranslations();
+
+        function buildSentence(sub, stem, ending, comp_fr) {
+            let pron = sub.fr;
+            if (pron === "je" && /^[aeiouéèà]/i.test(stem + ending)) {
+                pron = "j'";
+            }
+            let sentence = pron.charAt(0).toUpperCase() + pron.slice(1) + " " + stem + ending + " " + comp_fr;
+            return sentence;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = 'Correct! (Audio playback failed)<br>Translation: "' + correctEnglish + '"';
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
+            }
+        }
+
+        function generateQuestion() {
+            const index = Math.floor(Math.random() * subjects.length);
+            const sub = subjects[index];
+            const v = verbs[Math.floor(Math.random() * verbs.length)];
+            const comp = v.complements[Math.floor(Math.random() * v.complements.length)];
+
+            const ending = endings[index];
+            const correctForm = v.stem + ending;
+            const correctFrench = buildSentence(sub, v.stem, ending, comp.fr);
+
+            let auxiliary = [0,2,3].includes(index) ? 'was' : 'were';
+            if (v.type === 'regular') {
+                correctEnglish = sub.en + " " + auxiliary + " " + v.en + " " + comp.en;
+            } else if (v.type === 'etre') {
+                correctEnglish = sub.en + " " + auxiliary + " " + comp.en;
+            } else if (v.type === 'avoir') {
+                correctEnglish = sub.en + " " + v.en + " " + comp.en;
+            }
+            correctAnswer = correctFrench;
+
+            const wrongStem1 = v.inf.slice(0, -2);
+            const wrong1 = buildSentence(sub, wrongStem1, ending, comp.fr);
+
+            const allEndings = endings.slice();
+            allEndings.splice(index, 1);
+            const otherEnding = allEndings[Math.floor(Math.random() * allEndings.length)];
+            const wrong2 = buildSentence(sub, v.stem, otherEnding, comp.fr);
+
+            const wrong3 = buildSentence(sub, v.inf, "", comp.fr);
+
+            let options = [correctFrench, wrong1, wrong2, wrong3];
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `For the verb "${v.inf}", which clause is correct in imparfait?`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + idx;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[idx] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer);
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allLabels = document.querySelectorAll('.option label');
+
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer);
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = 'Correct!<br>Translation: "' + correctEnglish + '"';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        generateQuestion();
+    </script>
+</body>
+</html>
