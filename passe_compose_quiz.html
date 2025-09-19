@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Passé Composé Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            height: 550px;
+        }
+        #question {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .option {
+            position: relative;
+            display: block;
+        }
+        .option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .option label {
+            display: block;
+            padding: 15px 20px;
+            background-color: #e7eff6;
+            border: 2px solid #ccdbe8;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option input:checked + label {
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+        .option input:checked + label.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .option input:checked + label.wrong {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .option label:hover {
+            background-color: #d4e4f1;
+            border-color: #b3c9e0;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #feedback {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const subjects = [
+            {fr: "je", en: "I", aux_avoir: "ai", aux_etre: "suis"},
+            {fr: "tu", en: "you (informal)", aux_avoir: "as", aux_etre: "es"},
+            {fr: "il", en: "he", aux_avoir: "a", aux_etre: "est"},
+            {fr: "elle", en: "she", aux_avoir: "a", aux_etre: "est"},
+            {fr: "nous", en: "we", aux_avoir: "avons", aux_etre: "sommes"},
+            {fr: "vous", en: "you (formal/plural)", aux_avoir: "avez", aux_etre: "êtes"},
+            {fr: "ils", en: "they (masc)", aux_avoir: "ont", aux_etre: "sont"},
+            {fr: "elles", en: "they (fem)", aux_avoir: "ont", aux_etre: "sont"}
+        ];
+
+        const verbs = [
+            // Avoir verbs
+            {inf: "manger", part: "mangé", en: "ate", aux_type: "avoir", complements: [
+                {fr: "une pomme.", en: "an apple."},
+                {fr: "un sandwich.", en: "a sandwich."},
+                {fr: "la pizza.", en: "the pizza."}
+            ]},
+            {inf: "regarder", part: "regardé", en: "watched", aux_type: "avoir", complements: [
+                {fr: "la télévision.", en: "television."},
+                {fr: "un film.", en: "a movie."}
+            ]},
+            {inf: "acheter", part: "acheté", en: "bought", aux_type: "avoir", complements: [
+                {fr: "une voiture.", en: "a car."},
+                {fr: "des livres.", en: "books."}
+            ]},
+            {inf: "donner", part: "donné", en: "gave", aux_type: "avoir", complements: [
+                {fr: "un cadeau.", en: "a gift."},
+                {fr: "de l'argent.", en: "money."}
+            ]},
+            {inf: "faire", part: "fait", en: "did", aux_type: "avoir", complements: [
+                {fr: "les devoirs.", en: "homework."},
+                {fr: "une promenade.", en: "a walk."}
+            ]},
+            {inf: "voir", part: "vu", en: "saw", aux_type: "avoir", complements: [
+                {fr: "un ami.", en: "a friend."},
+                {fr: "le film.", en: "the movie."}
+            ]},
+            {inf: "choisir", part: "choisi", en: "chose", aux_type: "avoir", complements: [
+                {fr: "un cadeau.", en: "a gift."},
+                {fr: "la robe.", en: "the dress."}
+            ]},
+            {inf: "vendre", part: "vendu", en: "sold", aux_type: "avoir", complements: [
+                {fr: "sa voiture.", en: "his car."},
+                {fr: "la maison.", en: "the house."}
+            ]},
+            {inf: "inviter", part: "invité", en: "invited", aux_type: "avoir", complements: [
+                {fr: "des amis à dîner.", en: "friends to dinner."},
+                {fr: "sa famille.", en: "his family."}
+            ]},
+            {inf: "finir", part: "fini", en: "finished", aux_type: "avoir", complements: [
+                {fr: "ses devoirs.", en: "his homework."},
+                {fr: "le projet.", en: "the project."}
+            ]},
+            {inf: "oublier", part: "oublié", en: "forgot", aux_type: "avoir", complements: [
+                {fr: "son parapluie.", en: "his umbrella."},
+                {fr: "l'anniversaire.", en: "the birthday."}
+            ]},
+            {inf: "gagner", part: "gagné", en: "won", aux_type: "avoir", complements: [
+                {fr: "le match.", en: "the match."},
+                {fr: "la loterie.", en: "the lottery."}
+            ]},
+            {inf: "ranger", part: "rangé", en: "tidied", aux_type: "avoir", complements: [
+                {fr: "sa chambre.", en: "his room."},
+                {fr: "les livres.", en: "the books."}
+            ]},
+            {inf: "décider", part: "décidé", en: "decided", aux_type: "avoir", complements: [
+                {fr: "de ranger son bureau chaque semaine.", en: "to tidy his office every week."},
+                {fr: "de partir en vacances.", en: "to go on vacation."},
+                {fr: "d'étudier le français.", en: "to study French."}
+            ]},
+            // Être verbs
+            {inf: "aller", part: "allé", en: "went", aux_type: "etre", complements: [
+                {fr: "au parc.", en: "to the park."},
+                {fr: "en vacances.", en: "on vacation."}
+            ]},
+            {inf: "venir", part: "venu", en: "came", aux_type: "etre", complements: [
+                {fr: "de Paris.", en: "from Paris."},
+                {fr: "chez moi.", en: "to my house."}
+            ]},
+            {inf: "arriver", part: "arrivé", en: "arrived", aux_type: "etre", complements: [
+                {fr: "à l'heure.", en: "on time."},
+                {fr: "en avance.", en: "early."}
+            ]},
+            {inf: "partir", part: "parti", en: "left", aux_type: "etre", complements: [
+                {fr: "en voyage.", en: "on a trip."},
+                {fr: "tôt.", en: "early."}
+            ]},
+            {inf: "sortir", part: "sorti", en: "went out", aux_type: "etre", complements: [
+                {fr: "avec des amis.", en: "with friends."},
+                {fr: "du bâtiment.", en: "from the building."}
+            ]},
+            {inf: "monter", part: "monté", en: "went up", aux_type: "etre", complements: [
+                {fr: "les escaliers.", en: "the stairs."},
+                {fr: "à l'étage.", en: "upstairs."}
+            ]},
+            {inf: "descendre", part: "descendu", en: "went down", aux_type: "etre", complements: [
+                {fr: "les escaliers.", en: "the stairs."},
+                {fr: "de la montagne.", en: "from the mountain."}
+            ]},
+            {inf: "entrer", part: "entré", en: "entered", aux_type: "etre", complements: [
+                {fr: "dans la maison.", en: "the house."},
+                {fr: "dans la salle.", en: "the room."}
+            ]},
+            {inf: "retourner", part: "retourné", en: "returned", aux_type: "etre", complements: [
+                {fr: "à l'école.", en: "to school."},
+                {fr: "chez lui.", en: "home."}
+            ]},
+            {inf: "tomber", part: "tombé", en: "fell", aux_type: "etre", complements: [
+                {fr: "par terre.", en: "on the ground."},
+                {fr: "dans l'eau.", en: "into the water."}
+            ]},
+            {inf: "rester", part: "resté", en: "stayed", aux_type: "etre", complements: [
+                {fr: "à la maison.", en: "at home."},
+                {fr: "en ville.", en: "in town."}
+            ]}
+        ];
+
+        let correctAnswer = '';
+        let correctEnglish = '';
+        let answeredCorrectly = false;
+
+        function buildSentence(sub, aux_str, part, comp_fr) {
+            let pron = sub.fr;
+            if (pron === "je" && /^[aeiouh]/i.test(aux_str)) {
+                pron = "j'";
+            }
+            let sentence = pron.charAt(0).toUpperCase() + pron.slice(1) + " " + aux_str + " " + part + " " + comp_fr;
+            return sentence;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = 'Correct! (Audio playback failed)<br>Translation: "' + correctEnglish + '"';
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
+            }
+        }
+
+        function generateQuestion() {
+            const sub = subjects[Math.floor(Math.random() * subjects.length)];
+            const v = verbs[Math.floor(Math.random() * verbs.length)];
+            const comp = v.complements[Math.floor(Math.random() * v.complements.length)];
+
+            // Correct sentence
+            const aux_str = v.aux_type === "avoir" ? sub.aux_avoir : sub.aux_etre;
+            let part = v.part;
+            if (v.aux_type === "etre") {
+                if (["elle", "elles"].includes(sub.fr)) part += "e";
+                if (["nous", "vous", "ils", "elles"].includes(sub.fr)) part += "s";
+            }
+            const correctFrench = buildSentence(sub, aux_str, part, comp.fr);
+            correctEnglish = sub.en + " " + v.en + " " + comp.en;
+            correctAnswer = correctFrench;
+
+            // Wrong 1: Opposite auxiliary type
+            const wrong_aux_type = v.aux_type === "avoir" ? "etre" : "avoir";
+            const wrong_aux_str = wrong_aux_type === "avoir" ? sub.aux_avoir : sub.aux_etre;
+            let wrong_part1 = v.part;
+            if (wrong_aux_type === "etre") {
+                if (["elle", "elles"].includes(sub.fr)) wrong_part1 += "e";
+                if (["nous", "vous", "ils", "elles"].includes(sub.fr)) wrong_part1 += "s";
+            }
+            const wrong1 = buildSentence(sub, wrong_aux_str, wrong_part1, comp.fr);
+
+            // Wrong 2: Same type, but wrong aux form
+            const all_aux = subjects.map(s => v.aux_type === "avoir" ? s.aux_avoir : s.aux_etre);
+            let filtered_aux = all_aux.filter(a => a !== aux_str);
+            const other_aux = filtered_aux[Math.floor(Math.random() * filtered_aux.length)];
+            const wrong2 = buildSentence(sub, other_aux, part, comp.fr);
+
+            // Wrong 3: Correct aux, wrong part (use infinitive)
+            const wrong3 = buildSentence(sub, aux_str, v.inf, comp.fr);
+
+            let options = [correctFrench, wrong1, wrong2, wrong3];
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `For the verb "${v.inf}", which clause is correct in passé composé?`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + index;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[index] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer); // Allow re-playing correct answer
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allRadios = document.querySelectorAll('input[name="choice"]');
+            const allLabels = document.querySelectorAll('.option label');
+
+            // Reset previous styles but keep the selected checked for now
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer); // Play pronunciation for correct answer
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = 'Correct!<br>Translation: "' + correctEnglish + '"';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+                // Allow further selections
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        // Initial question
+        generateQuestion();
+    </script>
+</body>
+</html>
