@@ -26,6 +26,7 @@
             width: 90%;
             min-height: auto;
             box-sizing: border-box;
+            position: relative;
         }
         #question {
             font-size: clamp(1rem, 2vw, 1.4rem);
@@ -33,6 +34,7 @@
             margin-bottom: 1.5rem;
             text-align: center;
             color: #2c3e50;
+            margin-top: 3rem; /* Added to prevent overlap with back button */
         }
         #options {
             display: flex;
@@ -91,10 +93,24 @@
             transition: background-color 0.3s ease;
             display: block;
             margin: 0 auto;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         button:hover {
             background-color: #0056b3;
+        }
+        #back-button {
+            background-color: #6b7280;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            margin: 0;
+        }
+        #back-button:hover {
+            background-color: #4b5563;
+        }
+        #back-button a {
+            text-decoration: none;
+            color: white;
         }
         #feedback {
             font-size: clamp(0.85rem, 1.5vw, 1rem);
@@ -110,6 +126,7 @@
             }
             #question {
                 font-size: clamp(0.9rem, 4vw, 1.2rem);
+                margin-top: 2.5rem; /* Adjusted for smaller screens */
             }
             .option label {
                 padding: 0.75rem;
@@ -118,6 +135,12 @@
             button {
                 padding: 0.75rem 1.5rem;
                 font-size: clamp(0.75rem, 3.5vw, 0.85rem);
+            }
+            #back-button {
+                top: 0.75rem;
+                right: 0.75rem;
+                padding: 0.5rem 1rem;
+                font-size: clamp(0.7rem, 3vw, 0.85rem);
             }
             #feedback {
                 font-size: clamp(0.75rem, 3.5vw, 0.9rem);
@@ -130,6 +153,7 @@
             }
             #question {
                 font-size: clamp(1rem, 2.5vw, 1.3rem);
+                margin-top: 2.75rem; /* Adjusted for medium screens */
             }
             .option label {
                 padding: 0.75rem 1rem;
@@ -138,6 +162,10 @@
             button {
                 padding: 0.75rem 1.5rem;
                 font-size: clamp(0.8rem, 2vw, 0.9rem);
+            }
+            #back-button {
+                top: 0.85rem;
+                right: 0.85rem;
             }
             #feedback {
                 font-size: clamp(0.8rem, 2vw, 0.95rem);
@@ -150,6 +178,7 @@
             }
             #question {
                 font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+                margin-top: 3rem;
             }
             .option label {
                 padding: 0.8rem 1.2rem;
@@ -158,6 +187,10 @@
             button {
                 padding: 0.8rem 1.6rem;
                 font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+            #back-button {
+                top: 1rem;
+                right: 1rem;
             }
             #feedback {
                 font-size: clamp(0.85rem, 1.4vw, 0.95rem);
@@ -170,6 +203,7 @@
             }
             #question {
                 font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+                margin-top: 3.25rem;
             }
             .option label {
                 padding: 1rem 1.5rem;
@@ -179,6 +213,10 @@
                 padding: 1rem 2rem;
                 font-size: clamp(0.9rem, 1.2vw, 1rem);
             }
+            #back-button {
+                top: 1.25rem;
+                right: 1.25rem;
+            }
             #feedback {
                 font-size: clamp(0.9rem, 1.2vw, 1rem);
             }
@@ -187,6 +225,7 @@
 </head>
 <body>
     <div class="container">
+        <button id="back-button"><a href="index.html">Back to Main Page</a></button>
         <div id="question"></div>
         <div id="options"></div>
         <button id="next" style="display: none;">Next Question</button>
@@ -276,7 +315,7 @@
             {inf: "attendre", stem: "attend", type: "regular", en: "waiting for", complements: [
                 {fr: "le bus sous la pluie.", en: "the bus in the rain."},
                 {fr: "ses amis au restaurant.", en: "his friends at the restaurant."},
-                {fr: "souvent à la bibliothèque.", en: "often at the library."}  // From TV5Monde
+                {fr: "souvent à la bibliothèque.", en: "often at the library."}
             ]},
             {inf: "travailler", stem: "travaill", type: "regular", en: "working", complements: [
                 {fr: "au bureau toute la journée.", en: "at the office all day."},
@@ -293,7 +332,7 @@
             {inf: "être", stem: "ét", type: "etre", en: "", complements: [
                 {fr: "heureux dans son enfance.", en: "happy during his childhood."},
                 {fr: "fatigué après le travail.", en: "tired after work."},
-                {fr: "jeune.", en: "young."}  // From TV5Monde: J'étais jeune.
+                {fr: "jeune.", en: "young."}
             ]},
             {inf: "avoir", stem: "av", type: "avoir", en: "had", complements: [
                 {fr: "faim tous les matins.", en: "hunger every morning."},
@@ -302,12 +341,12 @@
             {inf: "aller", stem: "all", type: "regular", en: "going", complements: [
                 {fr: "au parc tous les dimanches.", en: "to the park every Sunday."},
                 {fr: "en vacances chaque été.", en: "on vacation every summer."},
-                {fr: "tous les week-ends chez ma grand-mère.", en: "every weekend to my grandmother's house."}  // From Alpine French School example
+                {fr: "tous les week-ends chez ma grand-mère.", en: "every weekend to my grandmother's house."}
             ]},
             {inf: "venir", stem: "ven", type: "regular", en: "coming", complements: [
                 {fr: "de Paris en train.", en: "from Paris by train."},
                 {fr: "chez moi après l'école.", en: "to my house after school."},
-                {fr: "souvent ici.", en: "often here."}  // From TV5Monde: Je venais souvent ici.
+                {fr: "souvent ici.", en: "often here."}
             ]},
             {inf: "arriver", stem: "arriv", type: "regular", en: "arriving", complements: [
                 {fr: "à l'heure à l'école.", en: "on time at school."},
@@ -351,7 +390,6 @@
         let correctEnglish = '';
         let answeredCorrectly = false;
 
-        // Function to validate translations for grammatical correctness and context
         function validateTranslations() {
             subjects.forEach((sub, index) => {
                 verbs.forEach(verb => {
@@ -365,11 +403,9 @@
                         } else if (verb.type === 'avoir') {
                             enTranslation = `${sub.en} ${verb.en} ${comp.en}`;
                         }
-                        // Basic checks for grammatical correctness
                         if (enTranslation.includes("was was") || enTranslation.includes("were was") || enTranslation.includes("you was") || enTranslation.includes("we was") || enTranslation.includes("they was")) {
                             console.warn(`Invalid translation detected: "${enTranslation}" for subject "${sub.en}", verb "${verb.inf}", complement "${comp.fr}"`);
                         }
-                        // Ensure complements make sense with the verb
                         if (verb.type === 'regular' && !comp.en.match(/^(a |an |the |[a-zA-Z]* |every |on |to |in |at |from |by |into |with |during |after |often)/)) {
                             console.warn(`Context mismatch for verb "${verb.inf}" with complement "${comp.en}"`);
                         }
@@ -378,7 +414,6 @@
             });
         }
 
-        // Run validation before starting the quiz
         validateTranslations();
 
         function buildSentence(sub, stem, ending, comp_fr) {
