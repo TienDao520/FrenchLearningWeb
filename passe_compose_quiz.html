@@ -254,22 +254,17 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'fr-FR';
                 utterance.rate = 0.8;
-                utterance.volume = 0.5;
-
-                // Attempt to select a French voice
-                const voices = speechSynthesis.getVoices();
-                const frenchVoice = voices.find(voice => voice.lang.includes('fr'));
-                if (frenchVoice) {
-                    utterance.voice = frenchVoice;
-                } else {
-                    console.warn('No French voice found, using default.');
-                }
-
                 speechSynthesis.speak(utterance);
             } else {
-                document.getElementById('feedback').innerHTML = 'Correct! (Text-to-speech not supported on this device)<br>Translation: "' + correctEnglish + '"';
-                document.getElementById('feedback').style.display = 'block';
-                document.getElementById('feedback').style.color = '#155724';
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = 'Correct! (Audio playback failed)<br>Translation: "' + correctEnglish + '"';
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
             }
         }
 
@@ -380,12 +375,8 @@
 
         document.getElementById('next').addEventListener('click', generateQuestion);
 
-        // Ensure voices are loaded before generating the first question
-        if ('speechSynthesis' in window) {
-            speechSynthesis.onvoiceschanged = generateQuestion;
-        } else {
-            generateQuestion();
-        }
+        // Initial question
+        generateQuestion();
     </script>
 </body>
 </html>
