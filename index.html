@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Learning Hub for Kids</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Poppins:wght@400;600&display=swap');
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function App() {
+            return (
+                <div className="relative min-h-screen w-full flex items-center justify-center p-4 overflow-hidden">
+                    {/* Background Bubbles */}
+                    <div className="bubble w-20 h-20 top-10 left-10"></div>
+                    <div className="bubble w-16 h-16 top-20 right-20"></div>
+                    <div className="bubble w-24 h-24 bottom-10 left-20"></div>
+                    <div className="bubble w-14 h-14 bottom-20 right-10"></div>
+
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative z-10">
+                        <h1 className="text-4xl font-bold text-center text-blue-600 mb-6 font-[Poppins]">
+                            Bienvenue! French Learning Hub
+                        </h1>
+                        <p className="text-lg text-center text-gray-600 mb-8 font-[Comic Neue]">
+                            Let's make learning French super fun! Choose an exercise below to start!
+                        </p>
+                        <div className="grid grid-cols-1 gap-6">
+                            <a
+                                href="passe_compose_quiz.html"
+                                className="group flex items-center justify-between p-4 bg-blue-100 rounded-lg hover:bg-blue-200 transition duration-300 transform hover:scale-105"
+                            >
+                                <div className="flex items-center">
+                                    <svg
+                                        className="w-12 h-12 mr-4 text-blue-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        ></path>
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M12 2v2m0 16v2"
+                                        ></path>
+                                    </svg>
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-blue-800 font-[Poppins]">
+                                            Le Passé Composé Exercices 1
+                                        </h2>
+                                        <p className="text-gray-600 font-[Comic Neue]">
+                                            Practice the passé composé with fun sentences!
+                                        </p>
+                                    </div>
+                                </div>
+                                <svg
+                                    className="w-6 h-6 text-blue-600 group-hover:text-blue-800"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M9 5l7 7-7 7"
+                                    ></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div className="mt-8 text-center">
+                            <p className="text-gray-500 font-[Comic Neue]">
+                                More exciting exercises coming soon! 🚀
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
