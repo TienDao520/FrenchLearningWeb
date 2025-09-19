@@ -10,33 +10,35 @@
             background-color: #f0f4f8;
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 2vw;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
+            box-sizing: border-box;
         }
         .container {
             background-color: white;
-            padding: 40px;
+            padding: 5vw;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 90vw;
             width: 100%;
-            height: 550px;
+            min-height: auto;
+            box-sizing: border-box;
         }
         #question {
-            font-size: 26px;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
             font-weight: bold;
-            margin-bottom: 30px;
+            margin-bottom: 4vw;
             text-align: center;
             color: #2c3e50;
         }
         #options {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 2.5vw;
+            margin-bottom: 4vw;
         }
         .option {
             position: relative;
@@ -49,14 +51,15 @@
         }
         .option label {
             display: block;
-            padding: 15px 20px;
+            padding: 2.5vw 3.5vw;
             background-color: #e7eff6;
             border: 2px solid #ccdbe8;
             border-radius: 8px;
-            font-size: 18px;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
             text-align: left;
             cursor: pointer;
             transition: all 0.3s ease;
+            word-wrap: break-word;
         }
         .option input:checked + label {
             background-color: #d1e7dd;
@@ -77,28 +80,66 @@
             border-color: #b3c9e0;
         }
         button {
-            padding: 12px 24px;
+            padding: 2.5vw 5vw;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
             font-weight: bold;
             transition: background-color 0.3s ease;
             display: block;
             margin: 0 auto;
-            margin-bottom: 20px;
+            margin-bottom: 4vw;
         }
         button:hover {
             background-color: #0056b3;
         }
         #feedback {
-            font-size: 20px;
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 4vw;
             text-align: center;
             display: none;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 4vw;
+            }
+            #question {
+                font-size: clamp(1rem, 5vw, 1.4rem);
+            }
+            .option label {
+                padding: 3vw;
+                font-size: clamp(0.8rem, 4vw, 1rem);
+            }
+            button {
+                padding: 3vw 6vw;
+                font-size: clamp(0.8rem, 4vw, 0.9rem);
+            }
+            #feedback {
+                font-size: clamp(0.8rem, 4vw, 1rem);
+            }
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 5vw;
+            }
+            #question {
+                font-size: clamp(0.9rem, 6vw, 1.2rem);
+            }
+            .option label {
+                padding: 4vw;
+                font-size: clamp(0.7rem, 5vw, 0.9rem);
+            }
+            button {
+                padding: 4vw 8vw;
+                font-size: clamp(0.7rem, 5vw, 0.8rem);
+            }
+            #feedback {
+                font-size: clamp(0.7rem, 5vw, 0.9rem);
+            }
         }
     </style>
 </head>
@@ -123,7 +164,6 @@
         ];
 
         const verbs = [
-            // Avoir verbs
             {inf: "manger", part: "mangé", en: "ate", aux_type: "avoir", complements: [
                 {fr: "une pomme.", en: "an apple."},
                 {fr: "un sandwich.", en: "a sandwich."},
@@ -182,7 +222,6 @@
                 {fr: "de partir en vacances.", en: "to go on vacation."},
                 {fr: "d'étudier le français.", en: "to study French."}
             ]},
-            // Être verbs
             {inf: "aller", part: "allé", en: "went", aux_type: "etre", complements: [
                 {fr: "au parc.", en: "to the park."},
                 {fr: "en vacances.", en: "on vacation."}
@@ -273,7 +312,6 @@
             const v = verbs[Math.floor(Math.random() * verbs.length)];
             const comp = v.complements[Math.floor(Math.random() * v.complements.length)];
 
-            // Correct sentence
             const aux_str = v.aux_type === "avoir" ? sub.aux_avoir : sub.aux_etre;
             let part = v.part;
             if (v.aux_type === "etre") {
@@ -284,7 +322,6 @@
             correctEnglish = sub.en + " " + v.en + " " + comp.en;
             correctAnswer = correctFrench;
 
-            // Wrong 1: Opposite auxiliary type
             const wrong_aux_type = v.aux_type === "avoir" ? "etre" : "avoir";
             const wrong_aux_str = wrong_aux_type === "avoir" ? sub.aux_avoir : sub.aux_etre;
             let wrong_part1 = v.part;
@@ -294,13 +331,11 @@
             }
             const wrong1 = buildSentence(sub, wrong_aux_str, wrong_part1, comp.fr);
 
-            // Wrong 2: Same type, but wrong aux form
             const all_aux = subjects.map(s => v.aux_type === "avoir" ? s.aux_avoir : s.aux_etre);
             let filtered_aux = all_aux.filter(a => a !== aux_str);
             const other_aux = filtered_aux[Math.floor(Math.random() * filtered_aux.length)];
             const wrong2 = buildSentence(sub, other_aux, part, comp.fr);
 
-            // Wrong 3: Correct aux, wrong part (use infinitive)
             const wrong3 = buildSentence(sub, aux_str, v.inf, comp.fr);
 
             let options = [correctFrench, wrong1, wrong2, wrong3];
@@ -332,7 +367,7 @@
                 radio.addEventListener('change', () => {
                     if (answeredCorrectly) {
                         if (radio.value === correctAnswer) {
-                            speakFrench(correctAnswer); // Allow re-playing correct answer
+                            speakFrench(correctAnswer);
                         }
                         return;
                     }
@@ -351,14 +386,13 @@
             const allRadios = document.querySelectorAll('input[name="choice"]');
             const allLabels = document.querySelectorAll('.option label');
 
-            // Reset previous styles but keep the selected checked for now
             allLabels.forEach(label => {
                 label.classList.remove('correct', 'wrong');
             });
 
             if (selectedValue === correctAnswer) {
                 selectedRadio.nextElementSibling.classList.add('correct');
-                speakFrench(correctAnswer); // Play pronunciation for correct answer
+                speakFrench(correctAnswer);
                 answeredCorrectly = true;
                 document.getElementById('next').style.display = 'block';
                 document.getElementById('feedback').innerHTML = 'Correct!<br>Translation: "' + correctEnglish + '"';
@@ -369,13 +403,11 @@
                 document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
                 document.getElementById('feedback').style.display = 'block';
                 document.getElementById('feedback').style.color = '#721c24';
-                // Allow further selections
             }
         }
 
         document.getElementById('next').addEventListener('click', generateQuestion);
 
-        // Initial question
         generateQuestion();
     </script>
 </body>
