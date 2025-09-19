@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Passé Composé Quiz</title>
+    <title>French Passé Composé Quiz - TCF Preparation</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f4f8;
             color: #333;
             margin: 0;
-            padding: 2vw;
+            padding: 1rem;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -19,26 +19,26 @@
         }
         .container {
             background-color: white;
-            padding: 5vw;
+            padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            max-width: 90vw;
-            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Reduced max-width for better fit on laptops */
+            width: 90%;
             min-height: auto;
             box-sizing: border-box;
         }
         #question {
-            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            font-size: clamp(1rem, 2vw, 1.4rem); /* Smaller font for laptops/desktops */
             font-weight: bold;
-            margin-bottom: 4vw;
+            margin-bottom: 1.5rem;
             text-align: center;
             color: #2c3e50;
         }
         #options {
             display: flex;
             flex-direction: column;
-            gap: 2.5vw;
-            margin-bottom: 4vw;
+            gap: 0.75rem; /* Reduced gap for tighter layout */
+            margin-bottom: 1.5rem;
         }
         .option {
             position: relative;
@@ -51,11 +51,11 @@
         }
         .option label {
             display: block;
-            padding: 2.5vw 3.5vw;
+            padding: 0.75rem 1rem; /* Reduced padding */
             background-color: #e7eff6;
             border: 2px solid #ccdbe8;
             border-radius: 8px;
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            font-size: clamp(0.85rem, 1.5vw, 1rem); /* Smaller font */
             text-align: left;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -80,65 +80,111 @@
             border-color: #b3c9e0;
         }
         button {
-            padding: 2.5vw 5vw;
+            padding: 0.75rem 1.5rem; /* Reduced button size */
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
             font-weight: bold;
             transition: background-color 0.3s ease;
             display: block;
             margin: 0 auto;
-            margin-bottom: 4vw;
+            margin-bottom: 1.5rem;
         }
         button:hover {
             background-color: #0056b3;
         }
         #feedback {
-            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
             font-weight: bold;
-            margin-top: 4vw;
+            margin-top: 1.5rem;
             text-align: center;
             display: none;
         }
+        /* Mobile screens (up to 600px) */
         @media (max-width: 600px) {
             .container {
-                padding: 4vw;
+                padding: 1.5rem;
+                width: 95%;
             }
             #question {
-                font-size: clamp(1rem, 5vw, 1.4rem);
+                font-size: clamp(0.9rem, 4vw, 1.2rem);
             }
             .option label {
-                padding: 3vw;
-                font-size: clamp(0.8rem, 4vw, 1rem);
+                padding: 0.75rem;
+                font-size: clamp(0.75rem, 3.5vw, 0.9rem);
             }
             button {
-                padding: 3vw 6vw;
-                font-size: clamp(0.8rem, 4vw, 0.9rem);
+                padding: 0.75rem 1.5rem;
+                font-size: clamp(0.75rem, 3.5vw, 0.85rem);
             }
             #feedback {
-                font-size: clamp(0.8rem, 4vw, 1rem);
+                font-size: clamp(0.75rem, 3.5vw, 0.9rem);
             }
         }
-        @media (max-width: 400px) {
+        /* Tablets (600px to 1024px) */
+        @media (min-width: 601px) and (max-width: 1024px) {
             .container {
-                padding: 5vw;
+                padding: 1.75rem;
+                max-width: 700px;
             }
             #question {
-                font-size: clamp(0.9rem, 6vw, 1.2rem);
+                font-size: clamp(1rem, 2.5vw, 1.3rem);
             }
             .option label {
-                padding: 4vw;
-                font-size: clamp(0.7rem, 5vw, 0.9rem);
+                padding: 0.75rem 1rem;
+                font-size: clamp(0.8rem, 2vw, 0.95rem);
             }
             button {
-                padding: 4vw 8vw;
-                font-size: clamp(0.7rem, 5vw, 0.8rem);
+                padding: 0.75rem 1.5rem;
+                font-size: clamp(0.8rem, 2vw, 0.9rem);
             }
             #feedback {
-                font-size: clamp(0.7rem, 5vw, 0.9rem);
+                font-size: clamp(0.8rem, 2vw, 0.95rem);
+            }
+        }
+        /* Laptops (1024px to 1440px) */
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            .container {
+                padding: 2rem;
+                max-width: 750px;
+            }
+            #question {
+                font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+            }
+            .option label {
+                padding: 0.8rem 1.2rem;
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+            button {
+                padding: 0.8rem 1.6rem;
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+            #feedback {
+                font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+            }
+        }
+        /* Desktops (1440px and above) */
+        @media (min-width: 1441px) {
+            .container {
+                padding: 2.5rem;
+                max-width: 800px;
+            }
+            #question {
+                font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+            }
+            .option label {
+                padding: 1rem 1.5rem;
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
+            }
+            button {
+                padding: 1rem 2rem;
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
+            }
+            #feedback {
+                font-size: clamp(0.9rem, 1.2vw, 1rem);
             }
         }
     </style>
@@ -167,104 +213,246 @@
             {inf: "manger", part: "mangé", en: "ate", aux_type: "avoir", complements: [
                 {fr: "une pomme.", en: "an apple."},
                 {fr: "un sandwich.", en: "a sandwich."},
-                {fr: "la pizza.", en: "the pizza."}
+                {fr: "la pizza.", en: "the pizza."},
+                {fr: "un gâteau.", en: "a cake."}
             ]},
             {inf: "regarder", part: "regardé", en: "watched", aux_type: "avoir", complements: [
                 {fr: "la télévision.", en: "television."},
-                {fr: "un film.", en: "a movie."}
+                {fr: "un film.", en: "a movie."},
+                {fr: "un match de foot.", en: "a soccer match."}
             ]},
             {inf: "acheter", part: "acheté", en: "bought", aux_type: "avoir", complements: [
                 {fr: "une voiture.", en: "a car."},
-                {fr: "des livres.", en: "books."}
+                {fr: "des livres.", en: "books."},
+                {fr: "des vêtements.", en: "clothes."}
             ]},
             {inf: "donner", part: "donné", en: "gave", aux_type: "avoir", complements: [
                 {fr: "un cadeau.", en: "a gift."},
-                {fr: "de l'argent.", en: "money."}
+                {fr: "de l'argent.", en: "money."},
+                {fr: "des conseils.", en: "advice."}
             ]},
-            {inf: "faire", part: "fait", en: "did", aux_type: "avoir", complements: [
+            {inf: "faire", part: "fait", en: "did/made", aux_type: "avoir", complements: [
                 {fr: "les devoirs.", en: "homework."},
-                {fr: "une promenade.", en: "a walk."}
+                {fr: "une promenade.", en: "a walk."},
+                {fr: "du sport.", en: "sports."}
             ]},
             {inf: "voir", part: "vu", en: "saw", aux_type: "avoir", complements: [
                 {fr: "un ami.", en: "a friend."},
-                {fr: "le film.", en: "the movie."}
+                {fr: "le film.", en: "the movie."},
+                {fr: "un médecin.", en: "a doctor."}
             ]},
             {inf: "choisir", part: "choisi", en: "chose", aux_type: "avoir", complements: [
                 {fr: "un cadeau.", en: "a gift."},
-                {fr: "la robe.", en: "the dress."}
+                {fr: "la robe.", en: "the dress."},
+                {fr: "un plat.", en: "a dish."}
             ]},
             {inf: "vendre", part: "vendu", en: "sold", aux_type: "avoir", complements: [
                 {fr: "sa voiture.", en: "his car."},
-                {fr: "la maison.", en: "the house."}
+                {fr: "la maison.", en: "the house."},
+                {fr: "des billets.", en: "tickets."}
             ]},
             {inf: "inviter", part: "invité", en: "invited", aux_type: "avoir", complements: [
                 {fr: "des amis à dîner.", en: "friends to dinner."},
-                {fr: "sa famille.", en: "his family."}
+                {fr: "sa famille.", en: "his family."},
+                {fr: "à une fête.", en: "to a party."}
             ]},
             {inf: "finir", part: "fini", en: "finished", aux_type: "avoir", complements: [
                 {fr: "ses devoirs.", en: "his homework."},
-                {fr: "le projet.", en: "the project."}
+                {fr: "le projet.", en: "the project."},
+                {fr: "le repas.", en: "the meal."}
             ]},
             {inf: "oublier", part: "oublié", en: "forgot", aux_type: "avoir", complements: [
                 {fr: "son parapluie.", en: "his umbrella."},
-                {fr: "l'anniversaire.", en: "the birthday."}
+                {fr: "l'anniversaire.", en: "the birthday."},
+                {fr: "ses clés.", en: "his keys."}
             ]},
             {inf: "gagner", part: "gagné", en: "won", aux_type: "avoir", complements: [
                 {fr: "le match.", en: "the match."},
-                {fr: "la loterie.", en: "the lottery."}
+                {fr: "la loterie.", en: "the lottery."},
+                {fr: "un prix.", en: "a prize."}
             ]},
             {inf: "ranger", part: "rangé", en: "tidied", aux_type: "avoir", complements: [
                 {fr: "sa chambre.", en: "his room."},
-                {fr: "les livres.", en: "the books."}
+                {fr: "les livres.", en: "the books."},
+                {fr: "la cuisine.", en: "the kitchen."}
             ]},
             {inf: "décider", part: "décidé", en: "decided", aux_type: "avoir", complements: [
                 {fr: "de ranger son bureau chaque semaine.", en: "to tidy his office every week."},
                 {fr: "de partir en vacances.", en: "to go on vacation."},
                 {fr: "d'étudier le français.", en: "to study French."}
             ]},
+            {inf: "écouter", part: "écouté", en: "listened to", aux_type: "avoir", complements: [
+                {fr: "la musique.", en: "music."},
+                {fr: "un podcast.", en: "a podcast."},
+                {fr: "la radio.", en: "the radio."},
+                {fr: "les conseils du professeur.", en: "the teacher's advice."}
+            ]},
+            {inf: "parler", part: "parlé", en: "spoke", aux_type: "avoir", complements: [
+                {fr: "au professeur.", en: "to the teacher."},
+                {fr: "avec ses amis.", en: "with his friends."},
+                {fr: "en français.", en: "in French."},
+                {fr: "de ses projets.", en: "about his projects."}
+            ]},
+            {inf: "attendre", part: "attendu", en: "waited for", aux_type: "avoir", complements: [
+                {fr: "le bus.", en: "the bus."},
+                {fr: "ses amis.", en: "his friends."},
+                {fr: "le train.", en: "the train."}
+            ]},
+            {inf: "travailler", part: "travaillé", en: "worked", aux_type: "avoir", complements: [
+                {fr: "au bureau.", en: "at the office."},
+                {fr: "sur un projet.", en: "on a project."},
+                {fr: "toute la journée.", en: "all day."}
+            ]},
+            {inf: "lire", part: "lu", en: "read", aux_type: "avoir", complements: [
+                {fr: "un livre.", en: "a book."},
+                {fr: "le journal.", en: "the newspaper."},
+                {fr: "un roman.", en: "a novel."}
+            ]},
+            {inf: "écrire", part: "écrit", en: "wrote", aux_type: "avoir", complements: [
+                {fr: "une lettre.", en: "a letter."},
+                {fr: "un courriel.", en: "an email."},
+                {fr: "un rapport.", en: "a report."}
+            ]},
+            {inf: "boire", part: "bu", en: "drank", aux_type: "avoir", complements: [
+                {fr: "du café.", en: "coffee."},
+                {fr: "un verre d'eau.", en: "a glass of water."},
+                {fr: "du thé.", en: "tea."}
+            ]},
+            {inf: "prendre", part: "pris", en: "took", aux_type: "avoir", complements: [
+                {fr: "le bus.", en: "the bus."},
+                {fr: "une décision.", en: "a decision."},
+                {fr: "des photos.", en: "photos."}
+            ]},
+            {inf: "recevoir", part: "reçu", en: "received", aux_type: "avoir", complements: [
+                {fr: "une lettre.", en: "a letter."},
+                {fr: "un cadeau.", en: "a gift."},
+                {fr: "un appel.", en: "a call."}
+            ]},
+            {inf: "conduire", part: "conduit", en: "drove", aux_type: "avoir", complements: [
+                {fr: "la voiture.", en: "the car."},
+                {fr: "jusqu'à Paris.", en: "to Paris."}
+            ]},
+            {inf: "courir", part: "couru", en: "ran", aux_type: "avoir", complements: [
+                {fr: "un marathon.", en: "a marathon."},
+                {fr: "dans le parc.", en: "in the park."}
+            ]},
+            {inf: "savoir", part: "su", en: "knew", aux_type: "avoir", complements: [
+                {fr: "la réponse.", en: "the answer."},
+                {fr: "nager.", en: "to swim."}
+            ]},
+            {inf: "pouvoir", part: "pu", en: "was able to", aux_type: "avoir", complements: [
+                {fr: "venir hier.", en: "come yesterday."},
+                {fr: "finir à temps.", en: "finish on time."}
+            ]},
             {inf: "aller", part: "allé", en: "went", aux_type: "etre", complements: [
                 {fr: "au parc.", en: "to the park."},
-                {fr: "en vacances.", en: "on vacation."}
+                {fr: "en vacances.", en: "on vacation."},
+                {fr: "à l'université.", en: "to the university."},
+                {fr: "au cinéma.", en: "to the cinema."}
             ]},
             {inf: "venir", part: "venu", en: "came", aux_type: "etre", complements: [
                 {fr: "de Paris.", en: "from Paris."},
-                {fr: "chez moi.", en: "to my house."}
+                {fr: "chez moi.", en: "to my house."},
+                {fr: "à la fête.", en: "to the party."}
             ]},
             {inf: "arriver", part: "arrivé", en: "arrived", aux_type: "etre", complements: [
                 {fr: "à l'heure.", en: "on time."},
-                {fr: "en avance.", en: "early."}
+                {fr: "en avance.", en: "early."},
+                {fr: "à l'aéroport.", en: "at the airport."}
             ]},
             {inf: "partir", part: "parti", en: "left", aux_type: "etre", complements: [
                 {fr: "en voyage.", en: "on a trip."},
-                {fr: "tôt.", en: "early."}
+                {fr: "tôt.", en: "early."},
+                {fr: "pour l'école.", en: "for school."}
             ]},
             {inf: "sortir", part: "sorti", en: "went out", aux_type: "etre", complements: [
                 {fr: "avec des amis.", en: "with friends."},
-                {fr: "du bâtiment.", en: "from the building."}
+                {fr: "du bâtiment.", en: "from the building."},
+                {fr: "du restaurant.", en: "from the restaurant."}
             ]},
             {inf: "monter", part: "monté", en: "went up", aux_type: "etre", complements: [
                 {fr: "les escaliers.", en: "the stairs."},
-                {fr: "à l'étage.", en: "upstairs."}
+                {fr: "à l'étage.", en: "upstairs."},
+                {fr: "dans la voiture.", en: "into the car."}
             ]},
             {inf: "descendre", part: "descendu", en: "went down", aux_type: "etre", complements: [
                 {fr: "les escaliers.", en: "the stairs."},
-                {fr: "de la montagne.", en: "from the mountain."}
+                {fr: "de la montagne.", en: "from the mountain."},
+                {fr: "du train.", en: "from the train."}
             ]},
             {inf: "entrer", part: "entré", en: "entered", aux_type: "etre", complements: [
-                {fr: "dans la maison.", en: "the house."},
-                {fr: "dans la salle.", en: "the room."}
+                {fr: "dans la maison.", en: "into the house."},
+                {fr: "dans la salle.", en: "into the room."},
+                {fr: "à l'université.", en: "university."}
             ]},
             {inf: "retourner", part: "retourné", en: "returned", aux_type: "etre", complements: [
                 {fr: "à l'école.", en: "to school."},
-                {fr: "chez lui.", en: "home."}
+                {fr: "chez lui.", en: "home."},
+                {fr: "en France.", en: "to France."}
             ]},
             {inf: "tomber", part: "tombé", en: "fell", aux_type: "etre", complements: [
                 {fr: "par terre.", en: "on the ground."},
-                {fr: "dans l'eau.", en: "into the water."}
+                {fr: "dans l'eau.", en: "into the water."},
+                {fr: "malade.", en: "ill."}
             ]},
             {inf: "rester", part: "resté", en: "stayed", aux_type: "etre", complements: [
                 {fr: "à la maison.", en: "at home."},
-                {fr: "en ville.", en: "in town."}
+                {fr: "en ville.", en: "in town."},
+                {fr: "à l'hôtel.", en: "at the hotel."}
+            ]},
+            {inf: "naître", part: "né", en: "was born", aux_type: "etre", complements: [
+                {fr: "en 1995.", en: "in 1995."},
+                {fr: "à Paris.", en: "in Paris."},
+                {fr: "au Canada.", en: "in Canada."}
+            ]},
+            {inf: "mourir", part: "mort", en: "died", aux_type: "etre", complements: [
+                {fr: "en 2020.", en: "in 2020."},
+                {fr: "jeune.", en: "young."},
+                {fr: "à l'hôpital.", en: "in the hospital."}
+            ]},
+            {inf: "devenir", part: "devenu", en: "became", aux_type: "etre", complements: [
+                {fr: "médecin.", en: "a doctor."},
+                {fr: "célèbre.", en: "famous."},
+                {fr: "professeur.", en: "a teacher."}
+            ]},
+            {inf: "rentrer", part: "rentré", en: "returned home", aux_type: "etre", complements: [
+                {fr: "tard.", en: "late."},
+                {fr: "à la maison.", en: "home."},
+                {fr: "de l'école.", en: "from school."}
+            ]},
+            {inf: "passer", part: "passé", en: "passed by", aux_type: "etre", complements: [
+                {fr: "par le marché.", en: "by the market."},
+                {fr: "devant la boulangerie.", en: "in front of the bakery."},
+                {fr: "un examen.", en: "an exam."}
+            ]},
+            {inf: "revenir", part: "revenu", en: "came back", aux_type: "etre", complements: [
+                {fr: "à la maison.", en: "home."},
+                {fr: "de vacances.", en: "from vacation."},
+                {fr: "plus tard.", en: "later."}
+            ]},
+            {inf: "demeurer", part: "demeuré", en: "remained", aux_type: "etre", complements: [
+                {fr: "en France.", en: "in France."},
+                {fr: "au pouvoir.", en: "in power."}
+            ]},
+            {inf: "se laver", part: "lavé", en: "washed oneself", aux_type: "etre", complements: [
+                {fr: "les mains.", en: "one's hands."},
+                {fr: "le visage.", en: "one's face."}
+            ]},
+            {inf: "se lever", part: "levé", en: "got up", aux_type: "etre", complements: [
+                {fr: "tôt.", en: "early."},
+                {fr: "du lit.", en: "from bed."}
+            ]},
+            {inf: "se coucher", part: "couché", en: "went to bed", aux_type: "etre", complements: [
+                {fr: "tard.", en: "late."},
+                {fr: "à minuit.", en: "at midnight."}
+            ]},
+            {inf: "s'habiller", part: "habillé", en: "got dressed", aux_type: "etre", complements: [
+                {fr: "en rouge.", en: "in red."},
+                {fr: "rapidement.", en: "quickly."}
+            ]},
+            {inf: "se promener", part: "promené", en: "went for a walk", aux_type: "etre", complements: [
+                {fr: "dans le parc.", en: "in the park."},
+                {fr: "avec le chien.", en: "with the dog."}
             ]}
         ];
 
@@ -341,7 +529,7 @@
             let options = [correctFrench, wrong1, wrong2, wrong3];
             shuffle(options);
 
-            document.getElementById('question').innerHTML = `For the verb "${v.inf}", which clause is correct in passé composé?`;
+            document.getElementById('question').innerHTML = `For the verb "${v.inf}", which clause is correct in passé composé? (TCF-style practice)`;
 
             const optsDiv = document.getElementById('options');
             optsDiv.innerHTML = '';
