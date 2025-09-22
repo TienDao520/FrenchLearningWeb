@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Numbers Quiz (0 to 100) - TCF Preparation</title>
+    <link rel="stylesheet" href="./css/subpages.css">
+</head>
+<body>
+    <div class="container">
+        <button id="back-button"><a href="index.html">Back to Main Page</a></button>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const units = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
+        const teens = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
+        const tens = ['', 'dix', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante', 'quatre-vingt', 'quatre-vingt'];
+
+        let correctAnswer = '';
+        let answeredCorrectly = false;
+
+        function numberToFrench(n) {
+            let text = '';
+            if (n === 0) {
+                text = 'zéro';
+            } else if (n === 100) {
+                text = 'cent';
+            } else if (n < 10) {
+                text = units[n];
+            } else if (n < 20) {
+                text = teens[n - 10];
+            } else {
+                const ten = Math.floor(n / 10);
+                const unit = n % 10;
+                text = tens[ten];
+                if (ten < 7) {
+                    if (unit === 1) {
+                        text += '-et-un';
+                    } else if (unit > 0) {
+                        text += '-' + units[unit];
+                    }
+                } else if (ten === 7) {
+                    const add = 10 + unit;
+                    const addText = teens[add - 10];
+                    text = 'soixante-';
+                    if (add === 11) {
+                        text += 'et-' + addText;
+                    } else {
+                        text += addText;
+                    }
+                } else if (ten === 8) {
+                    if (unit === 0) {
+                        text += 's';
+                    } else {
+                        text += '-' + units[unit];
+                    }
+                } else if (ten === 9) {
+                    const add = 10 + unit;
+                    const addText = teens[add - 10];
+                    text = 'quatre-vingt-' + addText;
+                }
+            }
+            return text;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = 'Correct! (Audio playback failed)';
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
+            }
+        }
+
+        function generateQuestion() {
+            const num = Math.floor(Math.random() * 101);
+            correctAnswer = numberToFrench(num);
+            let options = [correctAnswer];
+            while (options.length < 4) {
+                const wrongNum = Math.floor(Math.random() * 101);
+                const wrong = numberToFrench(wrongNum);
+                if (!options.includes(wrong)) {
+                    options.push(wrong);
+                }
+            }
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `What is the French for ${num}?`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + idx;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[idx] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer);
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allLabels = document.querySelectorAll('.option label');
+
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer);
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = 'Correct!';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        generateQuestion();
+    </script>
+</body>
+</html>
