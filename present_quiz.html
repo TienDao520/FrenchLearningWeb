@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Present Quiz - TCF Preparation</title>
+    <link rel="stylesheet" href="./css/subpages.css">
+</head>
+<body>
+    <div class="container">
+        <button id="back-button"><a href="index.html">Back to Main Page</a></button>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const subjects = [
+            {fr: "je", en: "I"},
+            {fr: "tu", en: "you (informal)"},
+            {fr: "il", en: "he"},
+            {fr: "elle", en: "she"},
+            {fr: "nous", en: "we"},
+            {fr: "vous", en: "you (formal/plural)"},
+            {fr: "ils", en: "they (masc)"},
+            {fr: "elles", en: "they (fem)"}
+        ];
+
+        const personMap = [0, 1, 2, 2, 3, 4, 5, 5]; // Maps subject index to 6-person conjugation index
+
+        const erEndings = ["e", "es", "e", "ons", "ez", "ent"];
+        const irEndings = ["is", "is", "it", "issons", "issez", "issent"];
+        const reEndings = ["s", "s", "", "ons", "ez", "ent"];
+
+        const verbs = [
+            // Regular -er verbs
+            {inf: "manger", type: "er", en: "eat", enForms: ["eat", "eat", "eats", "eat", "eat", "eat"], complements: [
+                {fr: "une pomme tous les jours.", en: "an apple every day."},
+                {fr: "du pain le matin.", en: "bread in the morning."},
+                {fr: "des légumes.", en: "vegetables."}
+            ]},
+            {inf: "parler", type: "er", en: "speak", enForms: ["speak", "speak", "speaks", "speak", "speak", "speak"], complements: [
+                {fr: "français couramment.", en: "French fluently."},
+                {fr: "avec des amis.", en: "with friends."}
+            ]},
+            {inf: "aimer", type: "er", en: "like", enForms: ["like", "like", "likes", "like", "like", "like"], complements: [
+                {fr: "le français.", en: "French."},
+                {fr: "voyager.", en: "to travel."},
+                {fr: "la musique.", en: "music."}
+            ]},
+            {inf: "regarder", type: "er", en: "watch", enForms: ["watch", "watch", "watches", "watch", "watch", "watch"], complements: [
+                {fr: "la télévision.", en: "television."},
+                {fr: "un film.", en: "a movie."}
+            ]},
+            {inf: "travailler", type: "er", en: "work", enForms: ["work", "work", "works", "work", "work", "work"], complements: [
+                {fr: "dans un bureau.", en: "in an office."},
+                {fr: "toute la journée.", en: "all day."}
+            ]},
+            {inf: "habiter", type: "er", en: "live", enForms: ["live", "live", "lives", "live", "live", "live"], complements: [
+                {fr: "à Paris.", en: "in Paris."},
+                {fr: "en ville.", en: "in the city."}
+            ]},
+            {inf: "danser", type: "er", en: "dance", enForms: ["dance", "dance", "dances", "dance", "dance", "dance"], complements: [
+                {fr: "le soir.", en: "in the evening."},
+                {fr: "avec des amis.", en: "with friends."}
+            ]},
+            {inf: "chanter", type: "er", en: "sing", enForms: ["sing", "sing", "sings", "sing", "sing", "sing"], complements: [
+                {fr: "des chansons.", en: "songs."},
+                {fr: "sous la douche.", en: "in the shower."}
+            ]},
+            {inf: "jouer", type: "er", en: "play", enForms: ["play", "play", "plays", "play", "play", "play"], complements: [
+                {fr: "au football.", en: "soccer."},
+                {fr: "de la musique.", en: "music."}
+            ]},
+            {inf: "marcher", type: "er", en: "walk", enForms: ["walk", "walk", "walks", "walk", "walk", "walk"], complements: [
+                {fr: "dans le parc.", en: "in the park."},
+                {fr: "tous les jours.", en: "every day."}
+            ]},
+            // Regular -re verbs
+            {inf: "attendre", type: "re", en: "wait", enForms: ["wait", "wait", "waits", "wait", "wait", "wait"], complements: [
+                {fr: "le bus.", en: "for the bus."},
+                {fr: "ses amis.", en: "for their friends."}
+            ]},
+            {inf: "répondre", type: "re", en: "answer", enForms: ["answer", "answer", "answers", "answer", "answer", "answer"], complements: [
+                {fr: "à la question.", en: "the question."},
+                {fr: "au téléphone.", en: "the phone."}
+            ]},
+            {inf: "vendre", type: "re", en: "sell", enForms: ["sell", "sell", "sells", "sell", "sell", "sell"], complements: [
+                {fr: "sa voiture.", en: "their car."},
+                {fr: "des livres.", en: "books."}
+            ]},
+            {inf: "perdre", type: "re", en: "lose", enForms: ["lose", "lose", "loses", "lose", "lose", "lose"], complements: [
+                {fr: "ses clés.", en: "their keys."},
+                {fr: "le match.", en: "the match."}
+            ]},
+            {inf: "descendre", type: "re", en: "go down", enForms: ["go down", "go down", "goes down", "go down", "go down", "go down"], complements: [
+                {fr: "les escaliers.", en: "the stairs."},
+                {fr: "du bus.", en: "off the bus."}
+            ]},
+            // Regular -ir verbs (finir type)
+            {inf: "finir", type: "ir", en: "finish", enForms: ["finish", "finish", "finishes", "finish", "finish", "finish"], complements: [
+                {fr: "ses devoirs.", en: "their homework."},
+                {fr: "le travail.", en: "work."}
+            ]},
+            {inf: "choisir", type: "ir", en: "choose", enForms: ["choose", "choose", "chooses", "choose", "choose", "choose"], complements: [
+                {fr: "un cadeau.", en: "a gift."},
+                {fr: "une option.", en: "an option."}
+            ]},
+            {inf: "réfléchir", type: "ir", en: "think", enForms: ["think", "think", "thinks", "think", "think", "think"], complements: [
+                {fr: "à la situation.", en: "about the situation."},
+                {fr: "avant de décider.", en: "before deciding."}
+            ]},
+            // Irregular verbs
+            {inf: "être", type: "etre", forms: ["suis", "es", "est", "sommes", "êtes", "sont"], en: "be", enForms: ["am", "are", "is", "are", "are", "are"], complements: [
+                {fr: "étudiant.", en: "a student."},
+                {fr: "heureux.", en: "happy."},
+                {fr: "à la maison.", en: "at home."}
+            ]},
+            {inf: "avoir", type: "avoir", forms: ["ai", "as", "a", "avons", "avez", "ont"], en: "have", enForms: ["have", "have", "has", "have", "have", "have"], complements: [
+                {fr: "20 ans.", en: "20 years old."},
+                {fr: "un chat.", en: "a cat."},
+                {fr: "faim.", en: "hungry."}
+            ]},
+            {inf: "faire", type: "irreg", forms: ["fais", "fais", "fait", "faisons", "faites", "font"], en: "do/make", enForms: ["do", "do", "does", "do", "do", "do"], complements: [
+                {fr: "du sport.", en: "sports."},
+                {fr: "une promenade.", en: "for a walk."},
+                {fr: "la cuisine.", en: "the cooking."}
+            ]},
+            {inf: "aller", type: "irreg", forms: ["vais", "vas", "va", "allons", "allez", "vont"], en: "go", enForms: ["go", "go", "goes", "go", "go", "go"], complements: [
+                {fr: "à l'école.", en: "to school."},
+                {fr: "au cinéma.", en: "to the cinema."}
+            ]},
+            {inf: "venir", type: "irreg", forms: ["viens", "viens", "vient", "venons", "venez", "viennent"], en: "come", enForms: ["come", "come", "comes", "come", "come", "come"], complements: [
+                {fr: "à la fête.", en: "to the party."},
+                {fr: "de Paris.", en: "from Paris."}
+            ]},
+            {inf: "voir", type: "irreg", forms: ["vois", "vois", "voit", "voyons", "voyez", "voient"], en: "see", enForms: ["see", "see", "sees", "see", "see", "see"], complements: [
+                {fr: "un film.", en: "a movie."},
+                {fr: "ses amis.", en: "their friends."}
+            ]},
+            {inf: "prendre", type: "irreg", forms: ["prends", "prends", "prend", "prenons", "prenez", "prennent"], en: "take", enForms: ["take", "take", "takes", "take", "take", "take"], complements: [
+                {fr: "le train.", en: "the train."},
+                {fr: "un café.", en: "a coffee."}
+            ]},
+            {inf: "devoir", type: "irreg", forms: ["dois", "dois", "doit", "devons", "devez", "doivent"], en: "must", enForms: ["must", "must", "must", "must", "must", "must"], complements: [
+                {fr: "partir.", en: "leave."},
+                {fr: "étudier.", en: "study."}
+            ]},
+            {inf: "pouvoir", type: "irreg", forms: ["peux", "peux", "peut", "pouvons", "pouvez", "peuvent"], en: "can", enForms: ["can", "can", "can", "can", "can", "can"], complements: [
+                {fr: "aider.", en: "help."},
+                {fr: "venir.", en: "come."}
+            ]},
+            {inf: "vouloir", type: "irreg", forms: ["veux", "veux", "veut", "voulons", "voulez", "veulent"], en: "want", enForms: ["want", "want", "wants", "want", "want", "want"], complements: [
+                {fr: "manger.", en: "to eat."},
+                {fr: "un cadeau.", en: "a gift."}
+            ]}
+        ];
+
+        let correctAnswer = '';
+        let correctEnglish = '';
+        let answeredCorrectly = false;
+
+        function getEndings(type, pIndex) {
+            switch (type) {
+                case 'er': return erEndings[pIndex];
+                case 'ir': return irEndings[pIndex];
+                case 're': return reEndings[pIndex];
+                default: return '';
+            }
+        }
+
+        function getStem(inf, type) {
+            switch (type) {
+                case 'er':
+                case 're': return inf.slice(0, -2);
+                case 'ir': return inf.slice(0, -2);
+                default: return '';
+            }
+        }
+
+        function conjugate(verb, subIndex) {
+            const pIndex = personMap[subIndex];
+            if (verb.type === 'irreg' || verb.type === 'etre' || verb.type === 'avoir') {
+                return verb.forms[pIndex];
+            } else {
+                const stem = getStem(verb.inf, verb.type);
+                const ending = getEndings(verb.type, pIndex);
+                return stem + ending;
+            }
+        }
+
+        function validateTranslations() {
+            const errors = [];
+            subjects.forEach((sub, index) => {
+                const pIndex = personMap[index];
+                verbs.forEach(verb => {
+                    // Check verb properties
+                    if (!verb.en || typeof verb.en !== 'string' || verb.en.trim() === '') {
+                        errors.push(`Invalid or missing en for verb "${verb.inf}" (type: ${verb.type})`);
+                    }
+                    if (!verb.enForms || !Array.isArray(verb.enForms) || verb.enForms.length !== 6 || verb.enForms.some(form => !form || form.trim() === '')) {
+                        errors.push(`Invalid or missing enForms for verb "${verb.inf}" (type: ${verb.type})`);
+                    }
+                    // Check complements
+                    if (!verb.complements || !Array.isArray(verb.complements) || verb.complements.length === 0) {
+                        errors.push(`Missing complements for verb "${verb.inf}"`);
+                    } else {
+                        verb.complements.forEach(comp => {
+                            if (!comp.en || comp.en.trim() === '') {
+                                errors.push(`Missing or empty complement translation for verb "${verb.inf}", complement "${comp.fr}"`);
+                            }
+                            // Build and validate English translation
+                            const enVerbForm = verb.enForms[pIndex];
+                            const enTranslation = `${sub.en} ${enVerbForm} ${comp.en}`.trim();
+                            if (!enTranslation || enTranslation === '') {
+                                errors.push(`Empty translation for subject "${sub.en}", verb "${verb.inf}", complement "${comp.fr}"`);
+                            }
+                            if (enTranslation.includes("I ams ") || enTranslation.includes("you has") || enTranslation.includes("he have ") || enTranslation.includes("we has")) {
+                                errors.push(`Invalid translation: "${enTranslation}" for subject "${sub.en}", verb "${verb.inf}", complement "${comp.fr}"`);
+                            }
+                            if (!enTranslation.match(/[a-zA-Z]/)) {
+                                errors.push(`Invalid translation (no letters): "${enTranslation}" for subject "${sub.en}", verb "${verb.inf}", complement "${comp.fr}"`);
+                            }
+                        });
+                    }
+                });
+            });
+            if (errors.length > 0) {
+                console.error('Translation validation errors:', errors);
+                // alert('Translation errors detected. Check console for details.');  // Commented out to avoid alerts in production
+            } else {
+                console.log('All translations validated successfully.');
+            }
+        }
+
+        validateTranslations();
+
+        function buildSentence(sub, correctForm, comp_fr) {
+            let pron = sub.fr;
+            if (pron === "je" && /^[aeiouéèà]/i.test(correctForm)) {
+                pron = "j'";
+            }
+            let sentence = pron.charAt(0).toUpperCase() + pron.slice(1) + " " + correctForm + " " + comp_fr;
+            return sentence;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if (!text) {
+                console.error('No text provided for speech synthesis.');
+                return;
+            }
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = `Correct!<br>Translation: "${correctEnglish || 'Audio playback failed'}"`;
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
+            }
+        }
+
+        function generateQuestion() {
+            const index = Math.floor(Math.random() * subjects.length);
+            const sub = subjects[index];
+            const v = verbs[Math.floor(Math.random() * verbs.length)];
+            const comp = v.complements[Math.floor(Math.random() * v.complements.length)];
+
+            const correctForm = conjugate(v, index);
+            const correctFrench = buildSentence(sub, correctForm, comp.fr);
+
+            const pIndex = personMap[index];
+            let verbFormEn = v.enForms[pIndex];
+            let compEn = comp.en;
+
+            // Special cases for idiomatic expressions
+            if (v.inf === "avoir") {
+                if (comp.fr === "20 ans.") {
+                    verbFormEn = ["am", "are", "is", "are", "are", "are"][pIndex];
+                    compEn = "20 years old.";
+                } else if (comp.fr === "faim.") {
+                    verbFormEn = ["am", "are", "is", "are", "are", "are"][pIndex];
+                    compEn = "hungry.";
+                }
+                // "un chat." remains "have a cat."
+            }
+
+            if (v.inf === "faire") {
+                if (comp.fr === "du sport.") {
+                    verbFormEn = ["play", "play", "plays", "play", "play", "play"][pIndex];
+                    compEn = "sports.";
+                } else if (comp.fr === "une promenade.") {
+                    verbFormEn = ["go", "go", "goes", "go", "go", "go"][pIndex];
+                    compEn = "for a walk.";
+                } else if (comp.fr === "la cuisine.") {
+                    verbFormEn = ["do", "do", "does", "do", "do", "do"][pIndex];
+                    compEn = "the cooking.";
+                }
+            }
+
+            if (v.inf === "descendre" && comp.fr === "du bus.") {
+                verbFormEn = ["get", "get", "gets", "get", "get", "get"][pIndex];
+                compEn = "off the bus.";
+            }
+
+            correctEnglish = `${sub.en} ${verbFormEn} ${compEn}`.trim();
+            correctEnglish = correctEnglish.charAt(0).toUpperCase() + correctEnglish.slice(1);
+
+            console.log(`Generating question: subject="${sub.en}", verb="${v.inf}", complement="${comp.fr}", correctEnglish="${correctEnglish}"`);
+
+            // Fallback if translation is invalid
+            if (!correctEnglish || correctEnglish.trim() === '') {
+                console.error(`Failed to generate valid English translation for verb "${v.inf}", subject "${sub.fr}", complement "${comp.fr}"`);
+                correctEnglish = `Translation error for "${v.inf}"`;
+            }
+
+            correctAnswer = correctFrench;
+
+            // Generate wrong options
+            let options = [correctFrench];
+            // Wrong 1: full infinitive as form
+            const wrongForm1 = v.inf;
+            const wrong1 = buildSentence(sub, wrongForm1, comp.fr);
+            if (wrong1 !== correctFrench) options.push(wrong1);
+
+            // Wrong 2: wrong ending (random other ending from type)
+            let allEndings = [];
+            if (v.type === 'er') allEndings = erEndings;
+            else if (v.type === 'ir') allEndings = irEndings;
+            else if (v.type === 're') allEndings = reEndings;
+            allEndings = allEndings.filter((_, i) => i !== personMap[index]);
+            const otherEndingIndex = Math.floor(Math.random() * allEndings.length);
+            const otherEnding = allEndings[otherEndingIndex] || '';
+            let stem = getStem(v.inf, v.type);
+            const wrongForm2 = stem + otherEnding;
+            const wrong2 = buildSentence(sub, wrongForm2, comp.fr);
+            if (wrong2 !== correctFrench && !options.includes(wrong2)) options.push(wrong2);
+
+            // Wrong 3: random form from another verb
+            let otherV = verbs[Math.floor(Math.random() * verbs.length)];
+            let attempts = 0;
+            while (otherV === v && attempts < 10) {
+                otherV = verbs[Math.floor(Math.random() * verbs.length)];
+                attempts++;
+            }
+            const wrongForm3 = conjugate(otherV, index);
+            const wrong3 = buildSentence(sub, wrongForm3, comp.fr);
+            if (wrong3 !== correctFrench && !options.includes(wrong3)) options.push(wrong3);
+
+            // Ensure we have 4 options
+            while (options.length < 4) {
+                const fallbackV = verbs[Math.floor(Math.random() * verbs.length)];
+                const fallbackForm = conjugate(fallbackV, index);
+                const fallbackOption = buildSentence(sub, fallbackForm, comp.fr);
+                if (!options.includes(fallbackOption)) options.push(fallbackOption);
+            }
+
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `For the verb "${v.inf}", which clause is correct in présent?`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + idx;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[idx] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer);
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allLabels = document.querySelectorAll('.option label');
+
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer);
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = `Correct!<br>Translation: "${correctEnglish}"`;
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        generateQuestion();
+    </script>
+</body>
+</html>
