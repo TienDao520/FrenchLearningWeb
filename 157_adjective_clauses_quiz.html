@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French 157 Adjective Clauses Quiz - TCF Preparation</title>
+    <link rel="stylesheet" href="./css/subpages.css">
+</head>
+<body>
+    <div class="container">
+        <button id="back-button"><a href="index.html">Back to Main Page</a></button>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const subjects = [
+            {fr: "l'homme", en: "the man", gender: "masc", number: "sing"},
+            {fr: "la femme", en: "the woman", gender: "fem", number: "sing"},
+            {fr: "les enfants", en: "the children", gender: "masc", number: "plur"},
+            {fr: "les filles", en: "the girls", gender: "fem", number: "plur"},
+            {fr: "le garçon", en: "the boy", gender: "masc", number: "sing"},
+            {fr: "la fille", en: "the girl", gender: "fem", number: "sing"},
+            {fr: "les hommes", en: "the men", gender: "masc", number: "plur"},
+            {fr: "les femmes", en: "the women", gender: "fem", number: "plur"}
+        ];
+
+        const adjectives = [
+            {fr: "grand", en: "tall", forms: {masc_sing: "grand", fem_sing: "grande", masc_plur: "grands", fem_plur: "grandes"}},
+            {fr: "petit", en: "small", forms: {masc_sing: "petit", fem_sing: "petite", masc_plur: "petits", fem_plur: "petites"}},
+            {fr: "intelligent", en: "intelligent", forms: {masc_sing: "intelligent", fem_sing: "intelligente", masc_plur: "intelligents", fem_plur: "intelligentes"}},
+            {fr: "gentil", en: "kind", forms: {masc_sing: "gentil", fem_sing: "gentille", masc_plur: "gentils", fem_plur: "gentilles"}},
+            {fr: "célèbre", en: "famous", forms: {masc_sing: "célèbre", fem_sing: "célèbre", masc_plur: "célèbres", fem_plur: "célèbres"}},
+            {fr: "fatigué", en: "tired", forms: {masc_sing: "fatigué", fem_sing: "fatiguée", masc_plur: "fatigués", fem_plur: "fatiguées"}},
+            {fr: "heureux", en: "happy", forms: {masc_sing: "heureux", fem_sing: "heureuse", masc_plur: "heureux", fem_plur: "heureuses"}},
+            {fr: "triste", en: "sad", forms: {masc_sing: "triste", fem_sing: "triste", masc_plur: "tristes", fem_plur: "tristes"}}
+        ];
+
+        const complements = [
+            {fr: "marche vite.", en: "walks quickly."},
+            {fr: "lit un livre.", en: "is reading a book."},
+            {fr: "parle français.", en: "speaks French."},
+            {fr: "travaille dur.", en: "works hard."},
+            {fr: "aime chanter.", en: "loves to sing."},
+            {fr: "habite à Paris.", en: "lives in Paris."},
+            {fr: "joue au foot.", en: "plays soccer."},
+            {fr: "écrit un poème.", en: "is writing a poem."}
+        ];
+
+        let correctAnswer = '';
+        let correctEnglish = '';
+        let answeredCorrectly = false;
+
+        function buildSentence(sub, rel_pronoun, adj_form, comp_fr) {
+            return `${sub.fr.charAt(0).toUpperCase() + sub.fr.slice(1)} ${rel_pronoun} est ${adj_form} ${comp_fr}`;
+        }
+
+        function getAdjectiveForm(adj, gender, number) {
+            if (number === "plur") {
+                return gender === "masc" ? adj.forms.masc_plur : adj.forms.fem_plur;
+            } else {
+                return gender === "masc" ? adj.forms.masc_sing : adj.forms.fem_sing;
+            }
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    document.getElementById('feedback').innerHTML = `Correct! The sentence "${correctAnswer}" translates to "<span class='translation'>${correctEnglish}</span>" in English.`;
+                    document.getElementById('feedback').style.display = 'block';
+                    document.getElementById('feedback').style.color = '#155724';
+                });
+            }
+        }
+
+        function generateQuestion() {
+            const sub = subjects[Math.floor(Math.random() * subjects.length)];
+            const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const comp = complements[Math.floor(Math.random() * complements.length)];
+
+            const correctPronoun = "qui"; // For subject relative clauses
+            const adj_form = getAdjectiveForm(adj, sub.gender, sub.number);
+            const correctFrench = buildSentence(sub, correctPronoun, adj_form, comp.fr);
+            correctEnglish = `${sub.en} who is ${adj.en} ${comp.en}`;
+            correctAnswer = correctFrench;
+
+            // Wrong options
+            const wrongPronoun1 = "que"; // Incorrect pronoun
+            const wrong1 = buildSentence(sub, wrongPronoun1, adj_form, comp.fr);
+
+            const wrongPronoun2 = "dont"; // Incorrect pronoun
+            const wrong2 = buildSentence(sub, wrongPronoun2, adj_form, comp.fr);
+
+            // Wrong adjective form (e.g., wrong gender/number)
+            let wrong_adj_form;
+            if (sub.gender === "masc" && sub.number === "sing") {
+                wrong_adj_form = adj.forms.fem_sing;
+            } else if (sub.gender === "fem" && sub.number === "sing") {
+                wrong_adj_form = adj.forms.masc_sing;
+            } else if (sub.number === "plur") {
+                wrong_adj_form = getAdjectiveForm(adj, sub.gender === "masc" ? "fem" : "masc", sub.number);
+            }
+            const wrong3 = buildSentence(sub, correctPronoun, wrong_adj_form, comp.fr);
+
+            let options = [correctFrench, wrong1, wrong2, wrong3];
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `For the subject "${sub.fr}" and adjective "${adj.fr}", which adjective clause is correct? (TCF-style practice)`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + index;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[index] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer);
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allLabels = document.querySelectorAll('.option label');
+
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer);
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = `Correct! The sentence "${correctAnswer}" translates to "<span class='translation'>${correctEnglish}</span>" in English.`;
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        generateQuestion();
+    </script>
+</body>
+</html>
