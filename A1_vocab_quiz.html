@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French A1 Vocabulary Quiz - TCF Preparation</title>
+    <link rel="stylesheet" href="./css/subpages.css">
+</head>
+<body>
+    <div class="container">
+        <button id="back-button"><a href="index.html">Back to Main Page</a></button>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const vocab = [
+            {fr: "bonjour", en: "hello/good morning", complements: [
+                {fr: "Bonjour, je m'appelle Marie.", en: "Hello, my name is Marie."},
+                {fr: "Bonjour, comment allez-vous?", en: "Hello, how are you?"}
+            ]},
+            {fr: "merci", en: "thank you", complements: [
+                {fr: "Merci pour l'aide.", en: "Thank you for the help."}
+            ]},
+            {fr: "s'il vous plaît", en: "please", complements: [
+                {fr: "Un café, s'il vous plaît.", en: "A coffee, please."}
+            ]},
+            {fr: "au revoir", en: "goodbye", complements: [
+                {fr: "Au revoir, à demain!", en: "Goodbye, see you tomorrow!"}
+            ]},
+            {fr: "père", en: "father", complements: [
+                {fr: "Mon père est grand.", en: "My father is tall."}
+            ]},
+            {fr: "mère", en: "mother", complements: [
+                {fr: "Ma mère cuisine bien.", en: "My mother cooks well."}
+            ]},
+            {fr: "frère", en: "brother", complements: [
+                {fr: "J'ai un frère.", en: "I have a brother."}
+            ]},
+            {fr: "sœur", en: "sister", complements: [
+                {fr: "Ma sœur est étudiante.", en: "My sister is a student."}
+            ]},
+            {fr: "ami", en: "friend (male)", complements: [
+                {fr: "Mon ami habite à Paris.", en: "My friend lives in Paris."}
+            ]},
+            {fr: "amie", en: "friend (female)", complements: [
+                {fr: "Mon amie aime lire.", en: "My friend likes to read."}
+            ]},
+            {fr: "un", en: "one", complements: [
+                {fr: "J'ai un chat.", en: "I have one cat."}
+            ]},
+            {fr: "deux", en: "two", complements: [
+                {fr: "Deux livres, s'il vous plaît.", en: "Two books, please."}
+            ]},
+            {fr: "trois", en: "three", complements: [
+                {fr: "J'ai trois frères.", en: "I have three brothers."}
+            ]},
+            {fr: "quatre", en: "four", complements: [
+                {fr: "Quatre pommes sur la table.", en: "Four apples on the table."}
+            ]},
+            {fr: "cinq", en: "five", complements: [
+                {fr: "Cinq euros pour le billet.", en: "Five euros for the ticket."}
+            ]},
+            {fr: "rouge", en: "red", complements: [
+                {fr: "La voiture rouge est belle.", en: "The red car is beautiful."}
+            ]},
+            {fr: "bleu", en: "blue", complements: [
+                {fr: "Le ciel bleu est clair.", en: "The blue sky is clear."}
+            ]},
+            {fr: "vert", en: "green", complements: [
+                {fr: "J'ai un stylo vert.", en: "I have a green pen."}
+            ]},
+            {fr: "jaune", en: "yellow", complements: [
+                {fr: "Le soleil est jaune.", en: "The sun is yellow."}
+            ]},
+            {fr: "pain", en: "bread", complements: [
+                {fr: "Je mange du pain le matin.", en: "I eat bread in the morning."}
+            ]},
+            {fr: "eau", en: "water", complements: [
+                {fr: "Je bois de l'eau.", en: "I drink water."}
+            ]},
+            {fr: "pomme", en: "apple", complements: [
+                {fr: "Une pomme rouge, s'il vous plaît.", en: "A red apple, please."}
+            ]},
+            {fr: "fromage", en: "cheese", complements: [
+                {fr: "J'aime le fromage français.", en: "I like French cheese."}
+            ]},
+            {fr: "maison", en: "house", complements: [
+                {fr: "Ma maison est petite.", en: "My house is small."}
+            ]},
+            {fr: "école", en: "school", complements: [
+                {fr: "L'école est près d'ici.", en: "The school is near here."}
+            ]},
+            {fr: "livre", en: "book", complements: [
+                {fr: "Je lis un livre.", en: "I read a book."}
+            ]},
+            {fr: "stylo", en: "pen", complements: [
+                {fr: "Le stylo bleu est sur la table.", en: "The blue pen is on the table."}
+            ]},
+            {fr: "table", en: "table", complements: [
+                {fr: "La table est en bois.", en: "The table is made of wood."}
+            ]},
+            {fr: "chaise", en: "chair", complements: [
+                {fr: "Une chaise rouge dans la cuisine.", en: "A red chair in the kitchen."}
+            ]},
+            {fr: "lundi", en: "Monday", complements: [
+                {fr: "Lundi, je vais à l'école.", en: "Monday, I go to school."}
+            ]},
+            {fr: "mardi", en: "Tuesday", complements: [
+                {fr: "Mardi est un jour occupé.", en: "Tuesday is a busy day."}
+            ]},
+            {fr: "janvier", en: "January", complements: [
+                {fr: "Il fait froid en janvier.", en: "It's cold in January."}
+            ]},
+            {fr: "février", en: "February", complements: [
+                {fr: "Février est le mois de l'amour.", en: "February is the month of love."}
+            ]},
+            {fr: "beau", en: "beautiful/nice (weather)", complements: [
+                {fr: "Il fait beau aujourd'hui.", en: "The weather is nice today."}
+            ]},
+            {fr: "froid", en: "cold", complements: [
+                {fr: "Il fait froid en hiver.", en: "It's cold in winter."}
+            ]},
+            {fr: "chaud", en: "hot", complements: [
+                {fr: "Il fait chaud en été.", en: "It's hot in summer."}
+            ]},
+            {fr: "grand", en: "tall/big", complements: [
+                {fr: "Un grand arbre dans le jardin.", en: "A big tree in the garden."}
+            ]},
+            {fr: "petit", en: "small", complements: [
+                {fr: "Un petit chien court vite.", en: "A small dog runs fast."}
+            ]},
+            {fr: "bon", en: "good", complements: [
+                {fr: "C'est un bon livre.", en: "It's a good book."}
+            ]},
+            {fr: "mauvais", en: "bad", complements: [
+                {fr: "Le temps est mauvais.", en: "The weather is bad."}
+            ]},
+            {fr: "oui", en: "yes", complements: [
+                {fr: "Oui, j'aime le français.", en: "Yes, I like French."}
+            ]},
+            {fr: "non", en: "no", complements: [
+                {fr: "Non, je ne veux pas.", en: "No, I don't want to."}
+            ]},
+            {fr: "je", en: "I", complements: [
+                {fr: "Je suis étudiant.", en: "I am a student."}
+            ]},
+            {fr: "tu", en: "you (informal)", complements: [
+                {fr: "Tu es gentil.", en: "You are kind."}
+            ]},
+            {fr: "aller", en: "to go", complements: [
+                {fr: "Je vais au marché.", en: "I go to the market."}
+            ]},
+            {fr: "manger", en: "to eat", complements: [
+                {fr: "Je mange une pomme.", en: "I eat an apple."}
+            ]},
+            {fr: "boire", en: "to drink", complements: [
+                {fr: "Je bois de l'eau.", en: "I drink water."}
+            ]},
+            {fr: "parler", en: "to speak", complements: [
+                {fr: "Je parle français.", en: "I speak French."}
+            ]},
+            {fr: "habiter", en: "to live", complements: [
+                {fr: "J'habite à Lyon.", en: "I live in Lyon."}
+            ]},
+            {fr: "aimer", en: "to like/love", complements: [
+                {fr: "J'aime les chats.", en: "I like cats."}
+            ]}
+        ];
+
+        let correctAnswer = '';
+        let exampleFr = '';
+        let exampleEn = '';
+        let answeredCorrectly = false;
+
+        function validateVocab() {
+            vocab.forEach(v => {
+                v.complements.forEach(comp => {
+                    if (!comp.fr.toLowerCase().includes(v.fr.toLowerCase())) {
+                        console.warn(`Example mismatch for word "${v.fr}": complement "${comp.fr}" does not include the word.`);
+                    }
+                });
+            });
+        }
+
+        validateVocab();
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function speakFrench(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(text)}`;
+                const audio = new Audio(audioUrl);
+                audio.volume = 0.5;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    showExample();
+                });
+            }
+        }
+
+        function showExample() {
+            document.getElementById('feedback').innerHTML += `<br>Example: "${exampleFr}"<br>Translation: "${exampleEn}"`;
+        }
+
+        function generateQuestion() {
+            const v = vocab[Math.floor(Math.random() * vocab.length)];
+            const comp = v.complements[Math.floor(Math.random() * v.complements.length)];
+
+            correctAnswer = v.fr;
+            exampleFr = comp.fr;
+            exampleEn = comp.en;
+
+            let distractors = [];
+            while (distractors.length < 3) {
+                const distractor = vocab[Math.floor(Math.random() * vocab.length)].fr;
+                if (distractor !== correctAnswer && !distractors.includes(distractor)) {
+                    distractors.push(distractor);
+                }
+            }
+
+            let options = [correctAnswer, ...distractors];
+            shuffle(options);
+
+            document.getElementById('question').innerHTML = `What is the French word for "${v.en}"?`;
+
+            const optsDiv = document.getElementById('options');
+            optsDiv.innerHTML = '';
+            const letters = ['a.', 'b.', 'c.', 'd.'];
+            options.forEach((opt, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'choice';
+                radio.value = opt;
+                radio.id = 'opt-' + idx;
+
+                const label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.innerText = letters[idx] + ' ' + opt;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optsDiv.appendChild(optionDiv);
+
+                radio.addEventListener('change', () => {
+                    if (answeredCorrectly) {
+                        if (radio.value === correctAnswer) {
+                            speakFrench(correctAnswer);
+                        }
+                        return;
+                    }
+                    checkAnswer(radio);
+                });
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            answeredCorrectly = false;
+        }
+
+        function checkAnswer(selectedRadio) {
+            const selectedValue = selectedRadio.value;
+            const allLabels = document.querySelectorAll('.option label');
+
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'wrong');
+            });
+
+            if (selectedValue === correctAnswer) {
+                selectedRadio.nextElementSibling.classList.add('correct');
+                speakFrench(correctAnswer);
+                setTimeout(showExample, 500);
+                answeredCorrectly = true;
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('feedback').innerHTML = 'Correct!<br>Pronouncing the word...';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#155724';
+            } else {
+                selectedRadio.nextElementSibling.classList.add('wrong');
+                document.getElementById('feedback').innerHTML = 'Wrong! Try another option.';
+                document.getElementById('feedback').style.display = 'block';
+                document.getElementById('feedback').style.color = '#721c24';
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', generateQuestion);
+
+        generateQuestion();
+    </script>
+</body>
+</html>
