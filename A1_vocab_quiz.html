@@ -16,160 +16,387 @@
     </div>
 
     <script>
-        const vocab = [
-            {fr: "bonjour", en: "hello/good morning", complements: [
-                {fr: "Bonjour, je m'appelle Marie.", en: "Hello, my name is Marie."},
-                {fr: "Bonjour, comment allez-vous?", en: "Hello, how are you?"}
-            ]},
-            {fr: "merci", en: "thank you", complements: [
-                {fr: "Merci pour l'aide.", en: "Thank you for the help."}
-            ]},
-            {fr: "s'il vous plaît", en: "please", complements: [
-                {fr: "Un café, s'il vous plaît.", en: "A coffee, please."}
-            ]},
-            {fr: "au revoir", en: "goodbye", complements: [
-                {fr: "Au revoir, à demain!", en: "Goodbye, see you tomorrow!"}
-            ]},
-            {fr: "père", en: "father", complements: [
-                {fr: "Mon père est grand.", en: "My father is tall."}
-            ]},
-            {fr: "mère", en: "mother", complements: [
-                {fr: "Ma mère cuisine bien.", en: "My mother cooks well."}
-            ]},
-            {fr: "frère", en: "brother", complements: [
-                {fr: "J'ai un frère.", en: "I have a brother."}
-            ]},
-            {fr: "sœur", en: "sister", complements: [
-                {fr: "Ma sœur est étudiante.", en: "My sister is a student."}
-            ]},
-            {fr: "ami", en: "friend (male)", complements: [
-                {fr: "Mon ami habite à Paris.", en: "My friend lives in Paris."}
-            ]},
-            {fr: "amie", en: "friend (female)", complements: [
-                {fr: "Mon amie aime lire.", en: "My friend likes to read."}
-            ]},
-            {fr: "un", en: "one", complements: [
-                {fr: "J'ai un chat.", en: "I have one cat."}
-            ]},
-            {fr: "deux", en: "two", complements: [
-                {fr: "Deux livres, s'il vous plaît.", en: "Two books, please."}
-            ]},
-            {fr: "trois", en: "three", complements: [
-                {fr: "J'ai trois frères.", en: "I have three brothers."}
-            ]},
-            {fr: "quatre", en: "four", complements: [
-                {fr: "Quatre pommes sur la table.", en: "Four apples on the table."}
-            ]},
-            {fr: "cinq", en: "five", complements: [
-                {fr: "Cinq euros pour le billet.", en: "Five euros for the ticket."}
-            ]},
-            {fr: "rouge", en: "red", complements: [
-                {fr: "La voiture rouge est belle.", en: "The red car is beautiful."}
-            ]},
-            {fr: "bleu", en: "blue", complements: [
-                {fr: "Le ciel bleu est clair.", en: "The blue sky is clear."}
-            ]},
-            {fr: "vert", en: "green", complements: [
-                {fr: "J'ai un stylo vert.", en: "I have a green pen."}
-            ]},
-            {fr: "jaune", en: "yellow", complements: [
-                {fr: "Le soleil est jaune.", en: "The sun is yellow."}
-            ]},
-            {fr: "pain", en: "bread", complements: [
-                {fr: "Je mange du pain le matin.", en: "I eat bread in the morning."}
-            ]},
-            {fr: "eau", en: "water", complements: [
-                {fr: "Je bois de l'eau.", en: "I drink water."}
-            ]},
-            {fr: "pomme", en: "apple", complements: [
-                {fr: "Une pomme rouge, s'il vous plaît.", en: "A red apple, please."}
-            ]},
-            {fr: "fromage", en: "cheese", complements: [
-                {fr: "J'aime le fromage français.", en: "I like French cheese."}
-            ]},
-            {fr: "maison", en: "house", complements: [
-                {fr: "Ma maison est petite.", en: "My house is small."}
-            ]},
-            {fr: "école", en: "school", complements: [
-                {fr: "L'école est près d'ici.", en: "The school is near here."}
-            ]},
-            {fr: "livre", en: "book", complements: [
-                {fr: "Je lis un livre.", en: "I read a book."}
-            ]},
-            {fr: "stylo", en: "pen", complements: [
-                {fr: "Le stylo bleu est sur la table.", en: "The blue pen is on the table."}
-            ]},
-            {fr: "table", en: "table", complements: [
-                {fr: "La table est en bois.", en: "The table is made of wood."}
-            ]},
-            {fr: "chaise", en: "chair", complements: [
-                {fr: "Une chaise rouge dans la cuisine.", en: "A red chair in the kitchen."}
-            ]},
-            {fr: "lundi", en: "Monday", complements: [
-                {fr: "Lundi, je vais à l'école.", en: "Monday, I go to school."}
-            ]},
-            {fr: "mardi", en: "Tuesday", complements: [
-                {fr: "Mardi est un jour occupé.", en: "Tuesday is a busy day."}
-            ]},
-            {fr: "janvier", en: "January", complements: [
-                {fr: "Il fait froid en janvier.", en: "It's cold in January."}
-            ]},
-            {fr: "février", en: "February", complements: [
-                {fr: "Février est le mois de l'amour.", en: "February is the month of love."}
-            ]},
-            {fr: "beau", en: "beautiful/nice (weather)", complements: [
-                {fr: "Il fait beau aujourd'hui.", en: "The weather is nice today."}
-            ]},
-            {fr: "froid", en: "cold", complements: [
-                {fr: "Il fait froid en hiver.", en: "It's cold in winter."}
-            ]},
-            {fr: "chaud", en: "hot", complements: [
-                {fr: "Il fait chaud en été.", en: "It's hot in summer."}
-            ]},
-            {fr: "grand", en: "tall/big", complements: [
-                {fr: "Un grand arbre dans le jardin.", en: "A big tree in the garden."}
-            ]},
-            {fr: "petit", en: "small", complements: [
-                {fr: "Un petit chien court vite.", en: "A small dog runs fast."}
-            ]},
-            {fr: "bon", en: "good", complements: [
-                {fr: "C'est un bon livre.", en: "It's a good book."}
-            ]},
-            {fr: "mauvais", en: "bad", complements: [
-                {fr: "Le temps est mauvais.", en: "The weather is bad."}
-            ]},
-            {fr: "oui", en: "yes", complements: [
-                {fr: "Oui, j'aime le français.", en: "Yes, I like French."}
-            ]},
-            {fr: "non", en: "no", complements: [
-                {fr: "Non, je ne veux pas.", en: "No, I don't want to."}
-            ]},
-            {fr: "je", en: "I", complements: [
-                {fr: "Je suis étudiant.", en: "I am a student."}
-            ]},
-            {fr: "tu", en: "you (informal)", complements: [
-                {fr: "Tu es gentil.", en: "You are kind."}
-            ]},
-            {fr: "aller", en: "to go", complements: [
-                {fr: "Je vais au marché.", en: "I go to the market."}
-            ]},
-            {fr: "manger", en: "to eat", complements: [
-                {fr: "Je mange une pomme.", en: "I eat an apple."}
-            ]},
-            {fr: "boire", en: "to drink", complements: [
-                {fr: "Je bois de l'eau.", en: "I drink water."}
-            ]},
-            {fr: "parler", en: "to speak", complements: [
-                {fr: "Je parle français.", en: "I speak French."}
-            ]},
-            {fr: "habiter", en: "to live", complements: [
-                {fr: "J'habite à Lyon.", en: "I live in Lyon."}
-            ]},
-            {fr: "aimer", en: "to like/love", complements: [
-                {fr: "J'aime les chats.", en: "I like cats."}
-            ]}
-        ];
-
+const vocab = [
+          {fr: "bonjour", en: "hello/good morning", complements: [
+          {fr: "Bonjour, je m'appelle Marie.", en: "Hello, my name is Marie."},
+          {fr: "Bonjour, comment allez-vous?", en: "Hello, how are you?"}
+          ]},
+          {fr: "merci", en: "thank you", complements: [
+          {fr: "Merci pour l'aide.", en: "Thank you for the help."}
+          ]},
+          {fr: "s'il vous plaît", en: "please", complements: [
+          {fr: "Un café, s'il vous plaît.", en: "A coffee, please."}
+          ]},
+          {fr: "au revoir", en: "goodbye", complements: [
+          {fr: "Au revoir, à demain!", en: "Goodbye, see you tomorrow!"}
+          ]},
+          {fr: "père", en: "father", complements: [
+          {fr: "Mon père est grand.", en: "My father is tall."}
+          ]},
+          {fr: "mère", en: "mother", complements: [
+          {fr: "Ma mère cuisine bien.", en: "My mother cooks well."}
+          ]},
+          {fr: "frère", en: "brother", complements: [
+          {fr: "J'ai un frère.", en: "I have a brother."}
+          ]},
+          {fr: "sœur", en: "sister", complements: [
+          {fr: "Ma sœur est étudiante.", en: "My sister is a student."}
+          ]},
+          {fr: "ami", en: "friend (male)", complements: [
+          {fr: "Mon ami habite à Paris.", en: "My friend lives in Paris."}
+          ]},
+          {fr: "amie", en: "friend (female)", complements: [
+          {fr: "Mon amie aime lire.", en: "My friend likes to read."}
+          ]},
+          {fr: "un", en: "one", complements: [
+          {fr: "J'ai un chat.", en: "I have one cat."}
+          ]},
+          {fr: "deux", en: "two", complements: [
+          {fr: "Deux livres, s'il vous plaît.", en: "Two books, please."}
+          ]},
+          {fr: "trois", en: "three", complements: [
+          {fr: "J'ai trois frères.", en: "I have three brothers."}
+          ]},
+          {fr: "quatre", en: "four", complements: [
+          {fr: "Quatre pommes sur la table.", en: "Four apples on the table."}
+          ]},
+          {fr: "cinq", en: "five", complements: [
+          {fr: "Cinq euros pour le billet.", en: "Five euros for the ticket."}
+          ]},
+          {fr: "rouge", en: "red", complements: [
+          {fr: "La voiture rouge est belle.", en: "The red car is beautiful."}
+          ]},
+          {fr: "bleu", en: "blue", complements: [
+          {fr: "Le ciel bleu est clair.", en: "The blue sky is clear."}
+          ]},
+          {fr: "vert", en: "green", complements: [
+          {fr: "J'ai un stylo vert.", en: "I have a green pen."}
+          ]},
+          {fr: "jaune", en: "yellow", complements: [
+          {fr: "Le soleil est jaune.", en: "The sun is yellow."}
+          ]},
+          {fr: "pain", en: "bread", complements: [
+          {fr: "Je mange du pain le matin.", en: "I eat bread in the morning."}
+          ]},
+          {fr: "eau", en: "water", complements: [
+          {fr: "Je bois de l'eau.", en: "I drink water."}
+          ]},
+          {fr: "pomme", en: "apple", complements: [
+          {fr: "Une pomme rouge, s'il vous plaît.", en: "A red apple, please."}
+          ]},
+          {fr: "fromage", en: "cheese", complements: [
+          {fr: "J'aime le fromage français.", en: "I like French cheese."}
+          ]},
+          {fr: "maison", en: "house", complements: [
+          {fr: "Ma maison est petite.", en: "My house is small."}
+          ]},
+          {fr: "école", en: "school", complements: [
+          {fr: "L'école est près d'ici.", en: "The school is near here."}
+          ]},
+          {fr: "livre", en: "book", complements: [
+          {fr: "Je lis un livre.", en: "I read a book."}
+          ]},
+          {fr: "stylo", en: "pen", complements: [
+          {fr: "Le stylo bleu est sur la table.", en: "The blue pen is on the table."}
+          ]},
+          {fr: "table", en: "table", complements: [
+          {fr: "La table est en bois.", en: "The table is made of wood."}
+          ]},
+          {fr: "chaise", en: "chair", complements: [
+          {fr: "Une chaise rouge dans la cuisine.", en: "A red chair in the kitchen."}
+          ]},
+          {fr: "lundi", en: "Monday", complements: [
+          {fr: "Lundi, je vais à l'école.", en: "Monday, I go to school."}
+          ]},
+          {fr: "mardi", en: "Tuesday", complements: [
+          {fr: "Mardi est un jour occupé.", en: "Tuesday is a busy day."}
+          ]},
+          {fr: "janvier", en: "January", complements: [
+          {fr: "Il fait froid en janvier.", en: "It's cold in January."}
+          ]},
+          {fr: "février", en: "February", complements: [
+          {fr: "Février est le mois de l'amour.", en: "February is the month of love."}
+          ]},
+          {fr: "beau", en: "beautiful/nice (weather)", complements: [
+          {fr: "Il fait beau aujourd'hui.", en: "The weather is nice today."}
+          ]},
+          {fr: "froid", en: "cold", complements: [
+          {fr: "Il fait froid en hiver.", en: "It's cold in winter."}
+          ]},
+          {fr: "chaud", en: "hot", complements: [
+          {fr: "Il fait chaud en été.", en: "It's hot in summer."}
+          ]},
+          {fr: "grand", en: "tall/big", complements: [
+          {fr: "Un grand arbre dans le jardin.", en: "A big tree in the garden."}
+          ]},
+          {fr: "petit", en: "small", complements: [
+          {fr: "Un petit chien court vite.", en: "A small dog runs fast."}
+          ]},
+          {fr: "bon", en: "good", complements: [
+          {fr: "C'est un bon livre.", en: "It's a good book."}
+          ]},
+          {fr: "mauvais", en: "bad", complements: [
+          {fr: "Le temps est mauvais.", en: "The weather is bad."}
+          ]},
+          {fr: "oui", en: "yes", complements: [
+          {fr: "Oui, j'aime le français.", en: "Yes, I like French."}
+          ]},
+          {fr: "non", en: "no", complements: [
+          {fr: "Non, je ne veux pas.", en: "No, I don't want to."}
+          ]},
+          {fr: "je", en: "I", complements: [
+          {fr: "Je suis étudiant.", en: "I am a student."}
+          ]},
+          {fr: "tu", en: "you (informal)", complements: [
+          {fr: "Tu es gentil.", en: "You are kind."}
+          ]},
+          {fr: "aller", en: "to go", complements: [
+          {fr: "Je vais au marché.", en: "I go to the market."}
+          ]},
+          {fr: "manger", en: "to eat", complements: [
+          {fr: "Je mange une pomme.", en: "I eat an apple."}
+          ]},
+          {fr: "boire", en: "to drink", complements: [
+          {fr: "Je bois de l'eau.", en: "I drink water."}
+          ]},
+          {fr: "parler", en: "to speak", complements: [
+          {fr: "Je parle français.", en: "I speak French."}
+          ]},
+          {fr: "habiter", en: "to live", complements: [
+          {fr: "J'habite à Lyon.", en: "I live in Lyon."}
+          ]},
+          {fr: "aimer", en: "to like/love", complements: [
+          {fr: "J'aime les chats.", en: "I like cats."}
+          ]},
+          {fr: "six", en: "six", complements: [
+          {fr: "Six chats dans la maison.", en: "Six cats in the house."}
+          ]},
+          {fr: "sept", en: "seven", complements: [
+          {fr: "Sept jours dans la semaine.", en: "Seven days in the week."}
+          ]},
+          {fr: "huit", en: "eight", complements: [
+          {fr: "Huit livres sur l'étagère.", en: "Eight books on the shelf."}
+          ]},
+          {fr: "neuf", en: "nine", complements: [
+          {fr: "Neuf pommes dans le panier.", en: "Nine apples in the basket."}
+          ]},
+          {fr: "dix", en: "ten", complements: [
+          {fr: "Dix doigts aux mains.", en: "Ten fingers on the hands."}
+          ]},
+          {fr: "noir", en: "black", complements: [
+          {fr: "Le chat noir est mignon.", en: "The black cat is cute."}
+          ]},
+          {fr: "blanc", en: "white", complements: [
+          {fr: "La neige blanche tombe.", en: "The white snow falls."}
+          ]},
+          {fr: "marron", en: "brown", complements: [
+          {fr: "Les yeux marron sont beaux.", en: "Brown eyes are beautiful."}
+          ]},
+          {fr: "orange", en: "orange", complements: [
+          {fr: "L'orange est un fruit.", en: "The orange is a fruit."}
+          ]},
+          {fr: "violet", en: "purple", complements: [
+          {fr: "La fleur violette est jolie.", en: "The purple flower is pretty."}
+          ]},
+          {fr: "viande", en: "meat", complements: [
+          {fr: "Je mange de la viande.", en: "I eat meat."}
+          ]},
+          {fr: "poisson", en: "fish", complements: [
+          {fr: "Le poisson nage dans l'eau.", en: "The fish swims in the water."}
+          ]},
+          {fr: "légume", en: "vegetable", complements: [
+          {fr: "Les légumes sont sains.", en: "Vegetables are healthy."}
+          ]},
+          {fr: "fruit", en: "fruit", complements: [
+          {fr: "J'aime les fruits frais.", en: "I like fresh fruits."}
+          ]},
+          {fr: "riz", en: "rice", complements: [
+          {fr: "Le riz est blanc.", en: "The rice is white."}
+          ]},
+          {fr: "fenêtre", en: "window", complements: [
+          {fr: "La fenêtre est ouverte.", en: "The window is open."}
+          ]},
+          {fr: "porte", en: "door", complements: [
+          {fr: "La porte est fermée.", en: "The door is closed."}
+          ]},
+          {fr: "lit", en: "bed", complements: [
+          {fr: "Le lit est confortable.", en: "The bed is comfortable."}
+          ]},
+          {fr: "lampe", en: "lamp", complements: [
+          {fr: "La lampe est allumée.", en: "The lamp is on."}
+          ]},
+          {fr: "télévision", en: "television", complements: [
+          {fr: "Je regarde la télévision.", en: "I watch television."}
+          ]},
+          {fr: "mercredi", en: "Wednesday", complements: [
+          {fr: "Mercredi, je joue au foot.", en: "Wednesday, I play soccer."}
+          ]},
+          {fr: "jeudi", en: "Thursday", complements: [
+          {fr: "Jeudi est un jour scolaire.", en: "Thursday is a school day."}
+          ]},
+          {fr: "vendredi", en: "Friday", complements: [
+          {fr: "Vendredi, c'est le week-end.", en: "Friday, it's the weekend."}
+          ]},
+          {fr: "samedi", en: "Saturday", complements: [
+          {fr: "Samedi, je fais du shopping.", en: "Saturday, I go shopping."}
+          ]},
+          {fr: "dimanche", en: "Sunday", complements: [
+          {fr: "Dimanche, je me repose.", en: "Sunday, I rest."}
+          ]},
+          {fr: "mars", en: "March", complements: [
+          {fr: "Mars est au printemps.", en: "March is in spring."}
+          ]},
+          {fr: "avril", en: "April", complements: [
+          {fr: "Avril a des pluies.", en: "April has rains."}
+          ]},
+          {fr: "mai", en: "May", complements: [
+          {fr: "Mai est fleuri.", en: "May is flowery."}
+          ]},
+          {fr: "juin", en: "June", complements: [
+          {fr: "Juin est en été.", en: "June is in summer."}
+          ]},
+          {fr: "juillet", en: "July", complements: [
+          {fr: "Juillet est chaud.", en: "July is hot."}
+          ]},
+          {fr: "pluie", en: "rain", complements: [
+          {fr: "La pluie tombe dehors.", en: "The rain falls outside."}
+          ]},
+          {fr: "soleil", en: "sun", complements: [
+          {fr: "Le soleil brille.", en: "The sun shines."}
+          ]},
+          {fr: "neige", en: "snow", complements: [
+          {fr: "La neige est blanche.", en: "The snow is white."}
+          ]},
+          {fr: "vent", en: "wind", complements: [
+          {fr: "Le vent souffle fort.", en: "The wind blows strong."}
+          ]},
+          {fr: "joli", en: "pretty", complements: [
+          {fr: "La fleur est jolie.", en: "The flower is pretty."}
+          ]},
+          {fr: "jeune", en: "young", complements: [
+          {fr: "Le garçon est jeune.", en: "The boy is young."}
+          ]},
+          {fr: "vieux", en: "old", complements: [
+          {fr: "Le livre est vieux.", en: "The book is old."}
+          ]},
+          {fr: "il", en: "he", complements: [
+          {fr: "Il est professeur.", en: "He is a teacher."}
+          ]},
+          {fr: "elle", en: "she", complements: [
+          {fr: "Elle est médecin.", en: "She is a doctor."}
+          ]},
+          {fr: "nous", en: "we", complements: [
+          {fr: "Nous sommes amis.", en: "We are friends."}
+          ]},
+          {fr: "vous", en: "you (formal/plural)", complements: [
+          {fr: "Vous êtes gentil.", en: "You are kind."}
+          ]},
+          {fr: "ils", en: "they (masculine)", complements: [
+          {fr: "Ils jouent au foot.", en: "They play soccer."}
+          ]},
+          {fr: "elles", en: "they (feminine)", complements: [
+          {fr: "Elles lisent des livres.", en: "They read books."}
+          ]},
+          {fr: "regarder", en: "to watch", complements: [
+          {fr: "Je regarde un film.", en: "I watch a movie."}
+          ]},
+          {fr: "écouter", en: "to listen", complements: [
+          {fr: "J'écoute de la musique.", en: "I listen to music."}
+          ]},
+          {fr: "travailler", en: "to work", complements: [
+          {fr: "Je travaille au bureau.", en: "I work at the office."}
+          ]},
+          {fr: "étudier", en: "to study", complements: [
+          {fr: "J'étudie le français.", en: "I study French."}
+          ]},
+          {fr: "jouer", en: "to play", complements: [
+          {fr: "Je joue au tennis.", en: "I play tennis."}
+          ]},
+          {fr: "lire", en: "to read", complements: [
+          {fr: "Je lis un journal.", en: "I read a newspaper."}
+          ]},
+          {fr: "écrire", en: "to write", complements: [
+          {fr: "J'écris une lettre.", en: "I write a letter."}
+          ]},
+          {fr: "voir", en: "to see", complements: [
+          {fr: "Je vois un ami.", en: "I see a friend."}
+          ]},
+          {fr: "tête", en: "head", complements: [
+          {fr: "Ma tête est ronde.", en: "My head is round."}
+          ]},
+          {fr: "visage", en: "face", complements: [
+          {fr: "Son visage est souriant.", en: "His face is smiling."}
+          ]},
+          {fr: "œil", en: "eye", complements: [
+          {fr: "L'œil est bleu.", en: "The eye is blue."}
+          ]},
+          {fr: "nez", en: "nose", complements: [
+          {fr: "Le nez est petit.", en: "The nose is small."}
+          ]},
+          {fr: "bouche", en: "mouth", complements: [
+          {fr: "La bouche est grande.", en: "The mouth is big."}
+          ]},
+          {fr: "oreille", en: "ear", complements: [
+          {fr: "L'oreille entend bien.", en: "The ear hears well."}
+          ]},
+          {fr: "cheveux", en: "hair", complements: [
+          {fr: "Les cheveux sont longs.", en: "The hair is long."}
+          ]},
+          {fr: "bras", en: "arm", complements: [
+          {fr: "Le bras est fort.", en: "The arm is strong."}
+          ]},
+          {fr: "main", en: "hand", complements: [
+          {fr: "La main tient le stylo.", en: "The hand holds the pen."}
+          ]},
+          {fr: "jambe", en: "leg", complements: [
+          {fr: "La jambe est longue.", en: "The leg is long."}
+          ]},
+          {fr: "pied", en: "foot", complements: [
+          {fr: "Le pied marche vite.", en: "The foot walks fast."}
+          ]},
+          {fr: "corps", en: "body", complements: [
+          {fr: "Le corps est en forme.", en: "The body is fit."}
+          ]},
+          {fr: "dos", en: "back", complements: [
+          {fr: "Le dos fait mal.", en: "The back hurts."}
+          ]},
+          {fr: "ventre", en: "stomach/belly", complements: [
+          {fr: "Le ventre est plein.", en: "The stomach is full."}
+          ]},
+          {fr: "dent", en: "tooth", complements: [
+          {fr: "La dent est blanche.", en: "The tooth is white."}
+          ]},
+          {fr: "doigt", en: "finger", complements: [
+          {fr: "Le doigt pointe.", en: "The finger points."}
+          ]},
+          {fr: "baignoire", en: "bathtub", complements: [
+          {fr: "La baignoire est pleine d'eau.", en: "The bathtub is full of water."}
+          ]},
+          {fr: "canapé", en: "sofa", complements: [
+          {fr: "Le canapé est confortable.", en: "The sofa is comfortable."}
+          ]},
+          {fr: "cheminée", en: "fireplace", complements: [
+          {fr: "La cheminée chauffe la maison.", en: "The fireplace heats the house."}
+          ]},
+          {fr: "évier", en: "sink", complements: [
+          {fr: "L'évier est dans la cuisine.", en: "The sink is in the kitchen."}
+          ]},
+          {fr: "four", en: "oven", complements: [
+          {fr: "Le four cuit le pain.", en: "The oven bakes the bread."}
+          ]},
+          {fr: "frigo", en: "fridge", complements: [
+          {fr: "Le frigo garde la nourriture froide.", en: "The fridge keeps the food cold."}
+          ]},
+          {fr: "micro-ondes", en: "microwave", complements: [
+          {fr: "Le micro-ondes chauffe le repas.", en: "The microwave heats the meal."}
+          ]},
+          {fr: "oreiller", en: "pillow", complements: [
+          {fr: "L'oreiller est doux.", en: "The pillow is soft."}
+          ]},
+          {fr: "toilettes", en: "toilet", complements: [
+          {fr: "Les toilettes sont propres.", en: "The toilet is clean."}
+          ]}
+  ];
         let correctAnswer = '';
         let exampleFr = '';
         let exampleEn = '';
@@ -288,7 +515,7 @@
                 setTimeout(showExample, 500);
                 answeredCorrectly = true;
                 document.getElementById('next').style.display = 'block';
-                document.getElementById('feedback').innerHTML = 'Correct!<br>Pronouncing the word...';
+                document.getElementById('feedback').innerHTML = 'Correct!';
                 document.getElementById('feedback').style.display = 'block';
                 document.getElementById('feedback').style.color = '#155724';
             } else {
