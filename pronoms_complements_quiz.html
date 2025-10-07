@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>French Pronoms Compléments Quiz - TCF Preparation</title>
+    <link rel="stylesheet" href="./css/subpages.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="back-button">
+        <a href="index.html">Back to Main Page</a>
+      </button>
+      <div id="question"></div>
+      <div id="options"></div>
+      <button id="next" style="display: none">Next Question</button>
+      <div id="feedback"></div>
+    </div>
+    <script>
+      const pronouns = [
+        { base: "me", elided: "m'", en: "me" },
+        { base: "te", elided: "t'", en: "you (informal)" },
+        { base: "le", elided: "l'", en: "him/it (masc)" },
+        { base: "la", elided: "l'", en: "her/it (fem)" },
+        { base: "nous", en: "us" },
+        { base: "vous", en: "you (formal/plural)" },
+        { base: "les", en: "them" },
+        { base: "lui", en: "him/her (indirect)" },
+        { base: "leur", en: "them (indirect)" },
+      ];
+      const directPronouns = ["me", "te", "le", "la", "nous", "vous", "les"];
+      const indirectPronouns = ["me", "te", "lui", "nous", "vous", "leur"];
+      const verbs = [
+        {
+          inf: "voir",
+          type: "direct",
+          en: "see",
+          sentences: [
+            {
+              fr: "Le film est passionnant. Elle ___ voit au cinéma.",
+              correct: "le",
+              obj: "le film",
+              en: "The film is exciting. She sees it at the cinema.",
+            },
+            {
+              fr: "Tu es toujours là. Je ___ vois tous les jours.",
+              correct: "te",
+              obj: "toi",
+              en: "You are always there. I see you every day.",
+            },
+            {
+              fr: "Les oiseaux volent haut. Nous ___ voyons dehors.",
+              correct: "les",
+              obj: "les oiseaux",
+              en: "The birds fly high. We see them outside.",
+            },
+            {
+              fr: "Marie est ma sœur. Je ___ vois souvent.",
+              correct: "la",
+              obj: "Marie",
+              en: "Marie is my sister. I see her often.",
+            },
+          ],
+        },
+        {
+          inf: "écouter",
+          type: "direct",
+          en: "listen to",
+          sentences: [
+            {
+              fr: "La musique est douce. Tu ___ écoutes le soir.",
+              correct: "la",
+              obj: "la musique",
+              en: "The music is soft. You listen to it in the evening.",
+            },
+            {
+              fr: "Le professeur est sage. Nous ___ écoutons en classe.",
+              correct: "le",
+              obj: "le professeur",
+              en: "The teacher is wise. We listen to him in class.",
+            },
+            {
+              fr: "Nous avons des questions. Elle ___ écoute attentivement.",
+              correct: "nous",
+              obj: "nous",
+              en: "We have questions. She listens to us attentively.",
+            },
+            {
+              fr: "Mon frère parle bien. Je ___ écoute toujours.",
+              correct: "le",
+              obj: "mon frère",
+              en: "My brother speaks well. I always listen to him.",
+            },
+          ],
+        },
+        {
+          inf: "attendre",
+          type: "direct",
+          en: "wait for",
+          sentences: [
+            {
+              fr: "Sa copine est en retard. Il ___ attend à la porte.",
+              correct: "la",
+              obj: "sa copine",
+              en: "His girlfriend is late. He waits for her at the door.",
+            },
+            {
+              fr: "Les invités arrivent bientôt. Vous ___ attendez patiemment.",
+              correct: "les",
+              obj: "les invités",
+              en: "The guests arrive soon. You wait for them patiently.",
+            },
+            {
+              fr: "Vous êtes importants. Je ___ attends depuis longtemps.",
+              correct: "vous",
+              obj: "vous",
+              en: "You are important. I wait for you for a long time.",
+            },
+            {
+              fr: "Les enfants jouent dehors. Les parents ___ attendent avec impatience.",
+              correct: "les",
+              obj: "les enfants",
+              en: "The children play outside. The parents wait for them impatiently.",
+            },
+          ],
+        },
+        {
+          inf: "aider",
+          type: "direct",
+          en: "help",
+          sentences: [
+            {
+              fr: "Moi, j'ai des difficultés. Ma sœur ___ aide avec les maths.",
+              correct: "me",
+              obj: "moi",
+              en: "Me, I have difficulties. My sister helps me with math.",
+            },
+            {
+              fr: "Vous étudiez dur. Le professeur ___ aide souvent.",
+              correct: "vous",
+              obj: "vous",
+              en: "You study hard. The teacher helps you often.",
+            },
+            {
+              fr: "Les victimes souffrent. Ils ___ aident en urgence.",
+              correct: "les",
+              obj: "les victimes",
+              en: "The victims suffer. They help them in emergency.",
+            },
+            {
+              fr: "Toi, tu as besoin d'aide. Nous ___ aidons tout de suite.",
+              correct: "te",
+              obj: "toi",
+              en: "You, you need help. We help you right away.",
+            },
+          ],
+        },
+        {
+          inf: "parler",
+          type: "indirect",
+          en: "speak to",
+          sentences: [
+            {
+              fr: "Mon collègue est gentil. Je ___ parle au travail.",
+              correct: "lui",
+              obj: "à mon collègue",
+              en: "My colleague is nice. I speak to him at work.",
+            },
+            {
+              fr: "Ses enfants sont curieux. Elle ___ parle de ses rêves.",
+              correct: "leur",
+              obj: "à ses enfants",
+              en: "Her children are curious. She speaks to them about her dreams.",
+            },
+            {
+              fr: "Moi, je suis intéressé. Il ___ parle tous les matins.",
+              correct: "me",
+              obj: "à moi",
+              en: "Me, I am interested. He speaks to me every morning.",
+            },
+            {
+              fr: "Nos amis sont là. Nous ___ parlons longuement.",
+              correct: "leur",
+              obj: "à nos amis",
+              en: "Our friends are here. We speak to them at length.",
+            },
+          ],
+        },
+        {
+          inf: "donner",
+          type: "indirect",
+          en: "give to",
+          sentences: [
+            {
+              fr: "Alex est un bon serveur. Tu ___ donnes un conseil.",
+              correct: "lui",
+              obj: "à Alex",
+              en: "Alex is a good waiter. You give him a tip.",
+            },
+            {
+              fr: "Nos voisins sont sympas. Nous ___ donnons des cadeaux.",
+              correct: "leur",
+              obj: "à nos voisins",
+              en: "Our neighbors are nice. We give them gifts.",
+            },
+            {
+              fr: "Moi, je suis ta fille. Ma mère ___ donne de l'argent.",
+              correct: "me",
+              obj: "à moi",
+              en: "Me, I am your daughter. My mother gives me money.",
+            },
+            {
+              fr: "Alex et Lucas sont nos amis. Nous ___ donnons des cadeaux.",
+              correct: "leur",
+              obj: "à Alex et Lucas",
+              en: "Alex and Lucas are our friends. We give them gifts.",
+            },
+          ],
+        },
+        {
+          inf: "écrire",
+          type: "indirect",
+          en: "write to",
+          sentences: [
+            {
+              fr: "Sa tante est loin. Il ___ écrit une lettre.",
+              correct: "lui",
+              obj: "à sa tante",
+              en: "His aunt is far. He writes her a letter.",
+            },
+            {
+              fr: "Vos clients attendent. Vous ___ écrivez des emails.",
+              correct: "leur",
+              obj: "à vos clients",
+              en: "Your clients are waiting. You write them emails.",
+            },
+            {
+              fr: "Toi, tu es mon correspondant. Je ___ écris chaque semaine.",
+              correct: "te",
+              obj: "à toi",
+              en: "You, you are my pen pal. I write to you every week.",
+            },
+            {
+              fr: "Mes parents voyagent beaucoup. Nous ___ écrivons des cartes postales.",
+              correct: "leur",
+              obj: "à mes parents",
+              en: "My parents travel a lot. We write them postcards.",
+            },
+          ],
+        },
+        {
+          inf: "téléphoner",
+          type: "indirect",
+          en: "call",
+          sentences: [
+            {
+              fr: "Son frère est seul. Elle ___ téléphone le soir.",
+              correct: "lui",
+              obj: "à son frère",
+              en: "Her brother is alone. She calls him in the evening.",
+            },
+            {
+              fr: "Vous avez des problèmes. Ils ___ téléphonent pour aider.",
+              correct: "vous",
+              obj: "à vous",
+              en: "You have problems. They call you to help.",
+            },
+            {
+              fr: "Nos parents sont âgés. Nous ___ téléphonons souvent.",
+              correct: "leur",
+              obj: "à nos parents",
+              en: "Our parents are old. We call them often.",
+            },
+            {
+              fr: "La famille est réunie. Nous ___ téléphonons après le dîner.",
+              correct: "leur",
+              obj: "à la famille",
+              en: "The family is gathered. We call them after dinner.",
+            },
+          ],
+        },
+      ];
+      let correctAnswer = "";
+      let correctEnglish = "";
+      let fullSentence = "";
+      let answeredCorrectly = false;
+      function isVowel(char) {
+        return "aeiouy".includes(char.toLowerCase());
+      }
+      function getPronounForm(base, nextWord) {
+        const elidable = { me: "m'", te: "t'", le: "l'", la: "l'" };
+        if (elidable[base] && nextWord && isVowel(nextWord.charAt(0))) {
+          return elidable[base];
+        }
+        return base;
+      }
+      function validateTranslations() {
+        verbs.forEach((verb) => {
+          const allowed =
+            verb.type === "direct" ? directPronouns : indirectPronouns;
+          verb.sentences.forEach((sentence) => {
+            const pronoun = pronouns.find((p) => p.base === sentence.correct);
+            if (!pronoun) {
+              console.warn(
+                `Invalid pronoun in sentence: "${sentence.fr}" for verb "${verb.inf}"`
+              );
+            }
+            if (!allowed.includes(sentence.correct)) {
+              console.warn(
+                `${verb.type} verb "${verb.inf}" has incorrect pronoun "${sentence.correct}"`
+              );
+            }
+          });
+        });
+      }
+      validateTranslations();
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      function speakFrench(text) {
+        if ("speechSynthesis" in window) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "fr-FR";
+          utterance.rate = 0.8;
+          speechSynthesis.speak(utterance);
+        } else {
+          const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fr&client=tw-ob&q=${encodeURIComponent(
+            text
+          )}`;
+          const audio = new Audio(audioUrl);
+          audio.volume = 0.5;
+          audio.play().catch((error) => {
+            console.error("Audio playback failed:", error);
+            document.getElementById("feedback").innerHTML +=
+              " (Audio playback failed)";
+          });
+        }
+      }
+      function generateQuestion() {
+        const verb = verbs[Math.floor(Math.random() * verbs.length)];
+        const sentence =
+          verb.sentences[Math.floor(Math.random() * verb.sentences.length)];
+        correctAnswer = sentence.correct;
+        correctEnglish = sentence.en;
+        const parts = sentence.fr.split("___");
+        const nextWord = parts[1] ? parts[1].trim().split(/\s+/)[0] : "";
+        const pronounForm = getPronounForm(correctAnswer, nextWord);
+        fullSentence = parts[0] + pronounForm + parts[1];
+        const questionSentence = sentence.fr;
+        const allowedPronouns =
+          verb.type === "direct" ? directPronouns : indirectPronouns;
+        const wrongBases = pronouns
+          .filter(
+            (p) =>
+              p.base !== sentence.correct && allowedPronouns.includes(p.base)
+          )
+          .map((p) => p.base);
+        shuffle(wrongBases);
+        const options = [sentence.correct, ...wrongBases.slice(0, 3)];
+        shuffle(options);
+        document.getElementById(
+          "question"
+        ).innerHTML = `Complete the sentence with the correct pronoun: "${questionSentence}"<br>(Verb: ${verb.inf} - ${verb.type} object)`;
+        const optsDiv = document.getElementById("options");
+        optsDiv.innerHTML = "";
+        const letters = ["a.", "b.", "c.", "d."];
+        options.forEach((opt, idx) => {
+          const optionDiv = document.createElement("div");
+          optionDiv.className = "option";
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "choice";
+          radio.value = opt;
+          radio.id = "opt-" + idx;
+          const label = document.createElement("label");
+          label.htmlFor = radio.id;
+          const p = pronouns.find((pr) => pr.base === opt);
+          label.innerText = `${letters[idx]} ${opt} (${p ? p.en : ""})`;
+          optionDiv.appendChild(radio);
+          optionDiv.appendChild(label);
+          optsDiv.appendChild(optionDiv);
+          radio.addEventListener("change", () => {
+            if (answeredCorrectly) {
+              if (radio.value === correctAnswer) {
+                speakFrench(fullSentence);
+              }
+              return;
+            }
+            checkAnswer(radio);
+          });
+        });
+        document.getElementById("feedback").innerHTML = "";
+        document.getElementById("feedback").style.display = "none";
+        document.getElementById("next").style.display = "none";
+        answeredCorrectly = false;
+      }
+      function checkAnswer(selectedRadio) {
+        const selectedValue = selectedRadio.value;
+        const allLabels = document.querySelectorAll(".option label");
+        allLabels.forEach((label) => {
+          label.classList.remove("correct", "wrong");
+        });
+        if (selectedValue === correctAnswer) {
+          selectedRadio.nextElementSibling.classList.add("correct");
+          speakFrench(fullSentence);
+          answeredCorrectly = true;
+          document.getElementById("next").style.display = "block";
+          document.getElementById(
+            "feedback"
+          ).innerHTML = `Correct!<br>Translation: "${correctEnglish}"`;
+          document.getElementById("feedback").style.display = "block";
+          document.getElementById("feedback").style.color = "#155724";
+        } else {
+          selectedRadio.nextElementSibling.classList.add("wrong");
+          document.getElementById("feedback").innerHTML =
+            "Wrong! Try another option.";
+          document.getElementById("feedback").style.display = "block";
+          document.getElementById("feedback").style.color = "#721c24";
+        }
+      }
+      document
+        .getElementById("next")
+        .addEventListener("click", generateQuestion);
+      generateQuestion();
+    </script>
+  </body>
+</html>
